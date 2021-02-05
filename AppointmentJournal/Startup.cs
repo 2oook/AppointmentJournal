@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using AppointmentJournal.AppReversedDatabase;
 
 namespace AppointmentJournal
 {
@@ -26,7 +27,7 @@ namespace AppointmentJournal
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
+            services.AddDbContext<AppointmentJournalContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournalIdentity:ConnectionString"]));
 
