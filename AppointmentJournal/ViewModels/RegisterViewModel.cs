@@ -18,12 +18,14 @@ namespace AppointmentJournal.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [UIHint("password")]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
         [Required]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
+        [UIHint("password")]
         [Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
     }
