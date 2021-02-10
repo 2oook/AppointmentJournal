@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AppointmentJournal.Models
@@ -19,16 +20,16 @@ namespace AppointmentJournal.Models
             Database.EnsureCreated();
         }
 
+        // Метод для создания аккаунта администратора
         public static async Task CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
         {
-
             UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            string username = configuration["Data:AdminUser:Name"];
-            string email = configuration["Data:AdminUser:Email"];
-            string password = configuration["Data:AdminUser:Password"];
-            string role = configuration["Data:AdminUser:Role"];
+            string username = configuration["AdminUser:Name"];
+            string email = configuration["AdminUser:Email"];
+            string password = configuration["AdminUser:Password"];
+            string role = configuration["AdminUser:Role"];
 
             if (await userManager.FindByNameAsync(username) == null)
             {
@@ -50,6 +51,26 @@ namespace AppointmentJournal.Models
                     await userManager.AddToRoleAsync(user, role);
                 }
             }
+        }
+
+        // Метод для создания ролей
+        public static async Task CreateRoles(IServiceProvider serviceProvider) 
+        {
+            var roles = new List<string>()
+            {
+                "Customers",
+                "Producers"
+            };
+
+            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            foreach (var role in roles)
+            {
+                if (await roleManager.FindByNameAsync(role) == null)
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }        
         }
     }
 }

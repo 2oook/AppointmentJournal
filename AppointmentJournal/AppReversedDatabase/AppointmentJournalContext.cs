@@ -85,17 +85,17 @@ namespace AppointmentJournal.AppReversedDatabase
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
+                entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+
                 entity.Property(e => e.Name).IsRequired();
 
                 entity.Property(e => e.Price).HasColumnType("money");
 
                 entity.Property(e => e.ProducerId).HasColumnName("ProducerID");
 
-                entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
-
-                entity.HasOne(d => d.ServiceNavigation)
+                entity.HasOne(d => d.Category)
                     .WithMany(p => p.Services)
-                    .HasForeignKey(d => d.ServiceId)
+                    .HasForeignKey(d => d.CategoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Services_ServicesCategories");
             });

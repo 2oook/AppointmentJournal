@@ -17,9 +17,9 @@ namespace AppointmentJournal.AppReversedDatabase
         public int Duration { get; set; }
         public decimal Price { get; set; }
         public long ProducerId { get; set; }
-        public long ServiceId { get; set; }
+        public long CategoryId { get; set; }
 
-        public virtual ServicesCategory ServiceNavigation { get; set; }
+        public virtual ServicesCategory Category { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
     }
 }

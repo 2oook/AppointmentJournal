@@ -27,11 +27,13 @@ namespace AppointmentJournal
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+
             services.AddDbContext<AppointmentJournalContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournalIdentity:ConnectionString"]));
 
-            services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
+            services.AddTransient<IServiceRepository, FakeServiceRepository>();
 
             services.AddControllersWithViews();
         }
@@ -53,7 +55,16 @@ namespace AppointmentJournal
             app.UseAuthorization();
 
             // Создать аккаунт администратора, если его нет
-            //AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+            AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
+
+            if (env.IsDevelopment())
+            {
+                // создать роли
+                //AppIdentityDbContext.CreateRoles(app.ApplicationServices);
+
+                // по - возможности переместить вызов
+                FakeServiceRepository.CreateFakeUsers(app.ApplicationServices);
+            }
 
             app.UseEndpoints(endpoints =>
             {
