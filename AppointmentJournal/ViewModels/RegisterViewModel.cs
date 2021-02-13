@@ -24,7 +24,6 @@ namespace AppointmentJournal.ViewModels
         public string PhoneNumber { get; set; }
 
         [Required]
-        [UIHint("collection")]
         [Display(Name = "Тип пользователя")]
         public UserType UserType { get; set; }
 
@@ -40,5 +39,7 @@ namespace AppointmentJournal.ViewModels
         [UIHint("password")]
         [Display(Name = "Подтвердить пароль")]
         public string PasswordConfirm { get; set; }
+
+        public string ReturnUrl { get; set; } = "/";
     }
 }

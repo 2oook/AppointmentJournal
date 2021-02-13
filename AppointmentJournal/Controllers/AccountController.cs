@@ -5,9 +5,11 @@ using AppointmentJournal.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Transactions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AppointmentJournal.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -20,13 +22,18 @@ namespace AppointmentJournal.Controllers
         }
 
         [HttpGet]
-        public IActionResult Register()
+        [AllowAnonymous]
+        public ViewResult Register(string returnUrl = "/")
         {
-            return View();
+            return View(new RegisterViewModel() 
+            {
+                ReturnUrl = returnUrl
+            });
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(RegisterViewModel registerModel)
         {
             if (ModelState.IsValid)
             {
@@ -34,10 +41,10 @@ namespace AppointmentJournal.Controllers
                 {
                     try
                     {
-                        User user = new User { UserName = model.Name, City = model.City, PhoneNumber = model.PhoneNumber, Email = model.Email };
+                        User user = new User { UserName = registerModel.Name, City = registerModel.City, PhoneNumber = registerModel.PhoneNumber, Email = registerModel.Email };
 
                         // добавляем пользователя
-                        IdentityResult createUserResult = await _userManager.CreateAsync(user, model.Password);
+                        IdentityResult createUserResult = await _userManager.CreateAsync(user, registerModel.Password);
 
                         // если пользователь не был создан
                         if (!createUserResult.Succeeded)
@@ -47,14 +54,14 @@ namespace AppointmentJournal.Controllers
                                 ModelState.AddModelError(string.Empty, error.Description);
                             }
 
-                            return View(model);
+                            return View(registerModel);
                         }
 
                         // результат установки роли
                         IdentityResult setRoleResult = null;
 
                         // установить роль пользователю в БД
-                        switch (model.UserType)
+                        switch (registerModel.UserType)
                         {
                             case UserType.Consumer:
                                 setRoleResult = await _userManager.AddToRoleAsync(user, "Consumers");
@@ -64,15 +71,15 @@ namespace AppointmentJournal.Controllers
                                 break;
                             default:
                                 ModelState.AddModelError(string.Empty, "Тип пользователя не указан");
-                                return View(model);
+                                return View(registerModel);
                         }
 
                         if (setRoleResult?.Succeeded ?? false)
                         {
-                            // установка куки
+                            // установка куки, которое будет храниться до закрытия браузера
                             await _signInManager.SignInAsync(user, false);
                             scope.Complete();
-                            return RedirectToAction("Index", "Home");
+                            return Redirect(registerModel?.ReturnUrl);
                         }
                         else
                         {
@@ -90,7 +97,50 @@ namespace AppointmentJournal.Controllers
                 }
             }
 
-            return View(model);
+            return View(registerModel);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ViewResult Login(string returnUrl = "/")
+        {
+            return View(new LoginViewModel
+            {
+                ReturnUrl = returnUrl
+            });
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginViewModel loginModel)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = await _userManager.FindByNameAsync(loginModel.Name);
+
+                if (user != null)
+                {
+                    await _signInManager.SignOutAsync();
+
+                    var signInResult = await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, false);
+
+                    if (signInResult.Succeeded)
+                    {
+                        return Redirect(loginModel?.ReturnUrl);
+                    }
+                }
+            }
+
+            ModelState.AddModelError("", "Неверное имя или пароль");
+            return View(loginModel);
+        }
+
+        [AllowAnonymous]
+        public async Task<RedirectResult> Logout(string returnUrl = "/")
+        {
+            await _signInManager.SignOutAsync();
+            return Redirect(returnUrl);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿@model LoginViewModel
 
 @{ 
-    ViewBag.Title = "Log In";
-    Layout = "_AdminLayout"; 
+    ViewBag.Title = "Вход"; 
 }
+
+<h2>Вход</h2>
 
 <div class="text-danger" asp-validation-summary="All"></div>
 
@@ -19,5 +20,7 @@
         <div><span asp-validation-for="Password" class="text-danger"></span></div>
         <input asp-for="Password" class="form-control" />
     </div>
-    <button class="btn btn-primary" type="submit">Log In</button>
+    <div>
+        <input class="btn btn-primary" type="submit" value="Вход"/>
+    </div>
 </form>
