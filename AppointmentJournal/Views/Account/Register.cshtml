@@ -1,34 +1,52 @@
 ﻿@model AppointmentJournal.ViewModels.RegisterViewModel
 
+@{ 
+    ViewBag.Title = "Регистрация";
+}
+
 <h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
-    <div asp-validation-summary="ModelOnly"></div>
-    <div>
-        <label asp-for="Email"></label><br />
-        <input asp-for="Email" />
-        <span asp-validation-for="Email"></span>
+
+<div class="text-danger" asp-validation-summary="All"></div>
+
+<form asp-controller="Account" asp-action="Register" method="post">
+    <div class="form-group">
+        <label asp-for="Name"></label><br />
+        <input asp-for="Name" class="form-control"/>
+        <span asp-validation-for="Name" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="City"></label><br />
-        <input asp-for="City" />
-        <span asp-validation-for="City"></span>
+        <input asp-for="City" class="form-control"/>
+        <span asp-validation-for="City" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="UserType"></label><br />
-        <input asp-for="UserType" />
-        <span asp-validation-for="UserType"></span>
+        <select asp-for="UserType" asp-items="@Html.GetEnumSelectList<UserType>()" class="form-control">
+            <option value=""></option>
+        </select>
+        <span asp-validation-for="UserType" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label><br />
+        <input asp-for="PhoneNumber" class="form-control"/>
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Email"></label><br />
+        <input asp-for="Email" class="form-control"/>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
         <label asp-for="Password"></label><br />
-        <input asp-for="Password" />
-        <span asp-validation-for="Password"></span>
+        <input asp-for="Password" class="form-control"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
-    <div>
+    <div class="form-group">
         <label asp-for="PasswordConfirm"></label><br />
-        <input asp-for="PasswordConfirm" />
-        <span asp-validation-for="PasswordConfirm"></span>
+        <input asp-for="PasswordConfirm" class="form-control"/>
+        <span asp-validation-for="PasswordConfirm" class="text-danger"></span>
     </div>
     <div>
-        <input type="submit" value="Регистрация" />
+        <input class="btn btn-primary"  type="submit" value="Регистрация" />
     </div>
 </form>

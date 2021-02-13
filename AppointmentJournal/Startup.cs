@@ -57,11 +57,11 @@ namespace AppointmentJournal
             // Создать аккаунт администратора, если его нет
             AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
+            // создать роли
+            //AppIdentityDbContext.CreateRoles(app.ApplicationServices);
+
             if (env.IsDevelopment())
             {
-                // создать роли
-                //AppIdentityDbContext.CreateRoles(app.ApplicationServices);
-
                 // по - возможности переместить вызов
                 FakeServiceRepository.CreateFakeUsers(app.ApplicationServices);
             }

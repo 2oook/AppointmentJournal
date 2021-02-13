@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using AppointmentJournal.ViewModels;
 using AppointmentJournal.Models;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Transactions;
 
 namespace AppointmentJournal.Controllers
 {
@@ -28,23 +30,66 @@ namespace AppointmentJournal.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = new User { Email = model.Email, UserName = model.Email };
-                // добавляем пользователя
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) 
                 {
-                    // установка куки
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    try
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
+                        User user = new User { UserName = model.Name, City = model.City, PhoneNumber = model.PhoneNumber, Email = model.Email };
+
+                        // добавляем пользователя
+                        IdentityResult createUserResult = await _userManager.CreateAsync(user, model.Password);
+
+                        // если пользователь не был создан
+                        if (!createUserResult.Succeeded)
+                        {
+                            foreach (var error in createUserResult.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+
+                            return View(model);
+                        }
+
+                        // результат установки роли
+                        IdentityResult setRoleResult = null;
+
+                        // установить роль пользователю в БД
+                        switch (model.UserType)
+                        {
+                            case UserType.Consumer:
+                                setRoleResult = await _userManager.AddToRoleAsync(user, "Consumers");
+                                break;
+                            case UserType.Producer:
+                                setRoleResult = await _userManager.AddToRoleAsync(user, "Producers");
+                                break;
+                            default:
+                                ModelState.AddModelError(string.Empty, "Тип пользователя не указан");
+                                return View(model);
+                        }
+
+                        if (setRoleResult?.Succeeded ?? false)
+                        {
+                            // установка куки
+                            await _signInManager.SignInAsync(user, false);
+                            scope.Complete();
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            foreach (var error in setRoleResult?.Errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Description);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        scope.Dispose();
+                        throw;
                     }
                 }
             }
+
             return View(model);
         }
     }

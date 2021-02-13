@@ -1,20 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AppointmentJournal.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace AppointmentJournal.ViewModels
 {
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        [Display(Name = "Имя и фамилия")]
+        public string Name { get; set; }
 
         [Required]
         [Display(Name = "Город")]
         public string City { get; set; }
 
         [Required]
+        [UIHint("emailaddress")]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+        
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Номер телефона")]
+        public string PhoneNumber { get; set; }
+
+        [Required]
+        [UIHint("collection")]
         [Display(Name = "Тип пользователя")]
-        public string UserType { get; set; }
+        public UserType UserType { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

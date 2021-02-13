@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,7 +23,9 @@ namespace AppointmentJournal.Models
     /// </summary>
     public enum UserType 
     {
+        [Display(Name ="Потребитель услуг")]
         Consumer,
+        [Display(Name = "Производитель услуг")]
         Producer
     }
 }
