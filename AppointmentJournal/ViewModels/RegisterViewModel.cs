@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppointmentJournal.ViewModels
 {
+    /// <summary>
+    /// Модель представления страницы регистрации
+    /// </summary>
     public class RegisterViewModel
     {
         [Required]

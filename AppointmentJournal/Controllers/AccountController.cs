@@ -37,6 +37,7 @@ namespace AppointmentJournal.Controllers
         {
             if (ModelState.IsValid)
             {
+                // открыть транзакцию регистрации
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) 
                 {
                     try
@@ -78,6 +79,7 @@ namespace AppointmentJournal.Controllers
                         {
                             // установка куки, которое будет храниться до закрытия браузера
                             await _signInManager.SignInAsync(user, false);
+                            // завершить транзакцию регистрации
                             scope.Complete();
                             return Redirect(registerModel?.ReturnUrl);
                         }

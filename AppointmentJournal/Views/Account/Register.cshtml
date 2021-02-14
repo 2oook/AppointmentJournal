@@ -6,8 +6,6 @@
 
 <h2>Регистрация нового пользователя</h2>
 
-<div class="text-danger" asp-validation-summary="All"></div>
-
 <form asp-controller="Account" asp-action="Register" method="post">
     <input type="hidden" asp-for="ReturnUrl" />
     <div class="form-group">

@@ -2,6 +2,9 @@
 
 namespace AppointmentJournal.ViewModels
 {
+    /// <summary>
+    /// Модель представления страницы входа
+    /// </summary>
     public class LoginViewModel
     {
         [Required]

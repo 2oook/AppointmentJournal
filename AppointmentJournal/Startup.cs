@@ -36,6 +36,9 @@ namespace AppointmentJournal
             services.AddTransient<IServiceRepository, FakeServiceRepository>();
 
             services.AddControllersWithViews();
+
+            // включить компил€цию razor - страниц во врем€ выполнени€
+            services.AddRazorPages().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
