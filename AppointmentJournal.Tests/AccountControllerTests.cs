@@ -16,7 +16,7 @@ namespace AppointmentJournal.Tests
     public class AccountControllerTests
     {
         [Fact]
-        public async void Registration_Transactions_Completed()
+        public async void Registration_Transaction_Completed()
         {
             // Arrange
             Mock<IUserStore<User>> mockIUserStore = new Mock<IUserStore<User>>();
@@ -64,7 +64,7 @@ namespace AppointmentJournal.Tests
         }
 
         [Fact]
-        public async void Registration_Transactions_Uncompleted()
+        public async void Registration_Transaction_Uncompleted()
         {
             // Arrange
             Mock<IUserStore<User>> mockIUserStore = new Mock<IUserStore<User>>();

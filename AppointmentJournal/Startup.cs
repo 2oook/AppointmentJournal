@@ -73,8 +73,14 @@ namespace AppointmentJournal
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "empty",
+                    pattern: "{controller=Consumer}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute(
                      name: "default",
-                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                     pattern: "{controller}/{action}/{id?}");
+
+
             });
         }
     }

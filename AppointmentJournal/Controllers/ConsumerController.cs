@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Controllers
 {
-    public class HomeController : Controller
+    public class ConsumerController : Controller
     {
         private IServiceRepository serviceRepository;
 
-        public HomeController(IServiceRepository serviceRepository)
+        public ConsumerController(IServiceRepository serviceRepository)
         {
             this.serviceRepository = serviceRepository;
         }
