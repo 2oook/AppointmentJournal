@@ -91,7 +91,10 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.Property(e => e.Price).HasColumnType("money");
 
-                entity.Property(e => e.ProducerId).HasColumnName("ProducerID");
+                entity.Property(e => e.ProducerId)
+                    .IsRequired()
+                    .HasMaxLength(450)
+                    .HasColumnName("ProducerID");
 
                 entity.HasOne(d => d.Category)
                     .WithMany(p => p.Services)
@@ -115,7 +118,10 @@ namespace AppointmentJournal.AppReversedDatabase
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
-                entity.Property(e => e.ProducerId).HasColumnName("ProducerID");
+                entity.Property(e => e.ProducerId)
+                    .IsRequired()
+                    .HasMaxLength(450)
+                    .HasColumnName("ProducerID");
             });
 
             modelBuilder.Entity<WorkDaysTimeSpan>(entity =>

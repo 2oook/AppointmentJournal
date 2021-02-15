@@ -18,7 +18,22 @@ namespace AppointmentJournal.Models
             {
                 Appointments = new List<Appointment>()
                 { 
-                    new Appointment(){  }
+                    new Appointment()
+                    { 
+                        Address = new Address(){ AddressValue = "ул.Ленина, д.100" },
+                        Time = new DateTime(2021, 4, 15, 12, 00, 00),
+                        WorkDay = new WorkDay()
+                        { 
+                            WorkDaysTimeSpans = new List<WorkDaysTimeSpan>()
+                            { 
+                                new WorkDaysTimeSpan()
+                                {
+                                    BeginTime = new DateTime(2021, 4, 15, 10, 00, 00),
+                                    EndTime = new DateTime(2021, 4, 15, 19, 00, 00)
+                                }                              
+                            } 
+                        }
+                    }
                 },
                 Duration = 30,
                 Name = "Мойка снаружи",

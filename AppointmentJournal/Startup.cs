@@ -34,6 +34,7 @@ namespace AppointmentJournal
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournalIdentity:ConnectionString"]));
 
             services.AddTransient<IServiceRepository, FakeServiceRepository>();
+            //services.AddTransient<IServiceRepository, EFServiceRepository>();
 
             services.AddControllersWithViews();
 
