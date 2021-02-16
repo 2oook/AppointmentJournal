@@ -1,4 +1,5 @@
 ﻿using AppointmentJournal.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace AppointmentJournal.Controllers
             this.serviceRepository = serviceRepository;
         }
 
+        [Authorize(Roles = Constants.ProducersRole)]
         public ViewResult Index()
         {
             return View();

@@ -39,9 +39,6 @@ namespace AppointmentJournal.Models
                 Name = "Мойка снаружи",
                 Price = 200,
                 Category = autoCategory,
-                
-
-
             }
         }.AsQueryable();
 
@@ -51,24 +48,27 @@ namespace AppointmentJournal.Models
             UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-            var users = new List<(string name, string email, string password, string role)>()
+            var users = new List<(string name, string email, string password, List<string> roles)>()
             {
-                ("user1", "user1@email.com", "@Qaz123usr", "Customers"),
-                ("user2", "user2@email.com", "@Qaz123usr", "Customers"),
-                ("user3", "user3@email.com", "@Qaz123usr", "Customers"),
+                ("user1", "user1@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
+                ("user2", "user2@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
+                ("user3", "user3@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
 
-                ("producer1", "producer1@email.com", "@Qaz123usr", "Producers"),
-                ("producer2", "producer2@email.com", "@Qaz123usr", "Producers"),
-                ("producer3", "producer3@email.com", "@Qaz123usr", "Producers")
+                ("producer1", "producer1@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole }),
+                ("producer2", "producer2@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole }),
+                ("producer3", "producer3@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole })
             };
 
             foreach (var user in users)
             {
                 if (await userManager.FindByNameAsync(user.name) == null)
                 {
-                    if (await roleManager.FindByNameAsync(user.role) == null)
+                    foreach (var role in user.roles)
                     {
-                        await roleManager.CreateAsync(new IdentityRole(user.role));
+                        if (await roleManager.FindByNameAsync(role) == null)
+                        {
+                            await roleManager.CreateAsync(new IdentityRole(role));
+                        }
                     }
 
                     User new_user = new User
@@ -81,7 +81,10 @@ namespace AppointmentJournal.Models
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(new_user, user.role);
+                        foreach (var role in user.roles)
+                        {
+                            await userManager.AddToRoleAsync(new_user, role);
+                        }
                     }
                 }
             }         

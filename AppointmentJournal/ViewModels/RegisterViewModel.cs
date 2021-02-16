@@ -9,7 +9,7 @@ namespace AppointmentJournal.ViewModels
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "Имя и фамилия")]
+        [Display(Name = "Логин")]
         public string Name { get; set; }
 
         [Required]

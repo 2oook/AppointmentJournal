@@ -14,7 +14,6 @@ namespace AppointmentJournal.Models
     /// </summary>
     public class AppIdentityDbContext : IdentityDbContext<User>
     {
-
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options) 
         {
             Database.EnsureCreated();
@@ -58,8 +57,8 @@ namespace AppointmentJournal.Models
         {
             var roles = new List<string>()
             {
-                "Customers",
-                "Producers"
+                Constants.ConsumersRole,
+                Constants.ProducersRole
             };
 
             RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();

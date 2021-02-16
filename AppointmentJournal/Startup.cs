@@ -61,26 +61,24 @@ namespace AppointmentJournal
             // Создать аккаунт администратора, если его нет
             AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
 
-            // создать роли
-            //AppIdentityDbContext.CreateRoles(app.ApplicationServices);
+            // создать роли, если они не определены
+            AppIdentityDbContext.CreateRoles(app.ApplicationServices).Wait();
 
             if (env.IsDevelopment())
             {
-                // по - возможности переместить вызов
-                FakeServiceRepository.CreateFakeUsers(app.ApplicationServices);
+                // TODO // переместить вызов
+                FakeServiceRepository.CreateFakeUsers(app.ApplicationServices).Wait();
             }
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "empty",
-                    pattern: "{controller=Consumer}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
                 endpoints.MapControllerRoute(
                      name: "default",
                      pattern: "{controller}/{action}/{id?}");
-
-
             });
         }
     }

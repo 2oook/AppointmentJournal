@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Transactions;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AppointmentJournal.Controllers
 {
@@ -58,37 +60,42 @@ namespace AppointmentJournal.Controllers
                             return View(registerModel);
                         }
 
-                        // результат установки роли
-                        IdentityResult setRoleResult = null;
+                        // список результатов установки ролей
+                        List<IdentityResult> setRoleResultList = new List<IdentityResult>();
 
                         // установить роль пользователю в БД
                         switch (registerModel.UserType)
                         {
                             case UserType.Consumer:
-                                setRoleResult = await _userManager.AddToRoleAsync(user, "Consumers");
+                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
                                 break;
                             case UserType.Producer:
-                                setRoleResult = await _userManager.AddToRoleAsync(user, "Producers");
+                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
+                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ProducersRole));
                                 break;
                             default:
                                 ModelState.AddModelError(string.Empty, "Тип пользователя не указан");
                                 return View(registerModel);
                         }
 
-                        if (setRoleResult?.Succeeded ?? false)
+                        if (setRoleResultList.All(x => (x?.Succeeded ?? false)))
                         {
                             // установка куки, которое будет храниться до закрытия браузера
                             await _signInManager.SignInAsync(user, false);
                             // завершить транзакцию регистрации
                             scope.Complete();
+
                             return Redirect(registerModel?.ReturnUrl);
                         }
                         else
                         {
-                            foreach (var error in setRoleResult?.Errors)
+                            foreach (var setRoleResult in setRoleResultList)
                             {
-                                ModelState.AddModelError(string.Empty, error.Description);
-                            }
+                                foreach (var error in setRoleResult?.Errors)
+                                {
+                                    ModelState.AddModelError(string.Empty, error.Description);
+                                }
+                            }                         
                         }
                     }
                     catch
@@ -120,7 +127,7 @@ namespace AppointmentJournal.Controllers
             if (ModelState.IsValid)
             {
                 User user = await _userManager.FindByNameAsync(loginModel.Name);
-
+                
                 if (user != null)
                 {
                     await _signInManager.SignOutAsync();
@@ -138,7 +145,6 @@ namespace AppointmentJournal.Controllers
             return View(loginModel);
         }
 
-        [AllowAnonymous]
         public async Task<RedirectResult> Logout(string returnUrl = "/")
         {
             await _signInManager.SignOutAsync();
