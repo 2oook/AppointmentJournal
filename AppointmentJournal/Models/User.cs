@@ -21,7 +21,7 @@ namespace AppointmentJournal.Models
     /// <summary>
     /// Тип пользователя приложения
     /// </summary>
-    public enum UserType 
+    public enum UserType
     {
         None,
         [Display(Name ="Потребитель услуг")]

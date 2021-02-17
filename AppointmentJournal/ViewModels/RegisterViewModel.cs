@@ -8,35 +8,35 @@ namespace AppointmentJournal.ViewModels
     /// </summary>
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Логин не задан")]
         [Display(Name = "Логин")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Город не задан")]
         [Display(Name = "Город")]
         public string City { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Электронный адрес не задан")]
         [UIHint("emailaddress")]
         [Display(Name = "Email")]
         public string Email { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Номер телефона не задан")]
         [DataType(DataType.PhoneNumber)]
         [Display(Name = "Номер телефона")]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Тип пользователя не задан")]
         [Display(Name = "Тип пользователя")]
         public UserType UserType { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Пароль не задан")]
         [DataType(DataType.Password)]
         [UIHint("password")]
         [Display(Name = "Пароль")]
         public string Password { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Подтверждение пароля не задано")]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         [DataType(DataType.Password)]
         [UIHint("password")]

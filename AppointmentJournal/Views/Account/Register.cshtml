@@ -1,6 +1,7 @@
 ﻿@model RegisterViewModel
+@using AppointmentJournal.Infrastructure
 
-@{ 
+@{
     ViewBag.Title = Constants.AppNameUpperCase;
     ViewBag.PageType = "REGISTRATION";
 }
@@ -21,8 +22,7 @@
     </div>
     <div class="form-group">
         <label asp-for="UserType"></label><br />
-        <select asp-for="UserType" asp-items="@Html.GetEnumSelectList<UserType>()" class="form-control">
-            <option value=""></option>
+        <select asp-for="UserType" asp-items="@Html.CreateUserTypeList()" class="form-control">
         </select>
         <span asp-validation-for="UserType" class="text-danger"></span>
     </div>

@@ -187,7 +187,7 @@ namespace AppointmentJournal.Controllers
 
                 return View(userProfileViewModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // TODO : логировать ошибку
                 return View();
