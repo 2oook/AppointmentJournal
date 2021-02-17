@@ -64,12 +64,6 @@ namespace AppointmentJournal
             // создать роли, если они не определены
             AppIdentityDbContext.CreateRoles(app.ApplicationServices).Wait();
 
-            if (env.IsDevelopment())
-            {
-                // TODO // переместить вызов
-                FakeServiceRepository.CreateFakeUsers(app.ApplicationServices).Wait();
-            }
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

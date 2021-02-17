@@ -7,6 +7,8 @@ namespace AppointmentJournal.Models
 {
     public class Constants
     {
+        public const string AppNameUpperCase = "APPOINTMENT JOURNAL";
+
         public const string ConsumersRole = "Consumers";
         public const string ProducersRole = "Producers";
     }

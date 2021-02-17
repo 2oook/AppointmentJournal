@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = Constants.AppNameUpperCase;
+    ViewBag.PageType = "ADMIN PAGE";
+    Layout = "_AdminLayout";
+}
+
+<div class="text-center m-2">
+    <form asp-action="SeedDatabaseWithFakeData" method="post">
+        <button type="submit" class="btn btn-danger">Заполнить базу данных тестовыми данными</button>
+    </form>
+</div>
+

@@ -132,7 +132,7 @@ namespace AppointmentJournal.Controllers
                 {
                     await _signInManager.SignOutAsync();
 
-                    var signInResult = await _signInManager.PasswordSignInAsync(user, loginModel.Password, false, false);
+                    var signInResult = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true/*false*/, false);
 
                     if (signInResult.Succeeded)
                     {
@@ -149,6 +149,19 @@ namespace AppointmentJournal.Controllers
         {
             await _signInManager.SignOutAsync();
             return Redirect(returnUrl);
+        }
+
+        [HttpGet]
+        public ViewResult Profile()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [Route("/Account/AccessDenied")]
+        public ActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }
