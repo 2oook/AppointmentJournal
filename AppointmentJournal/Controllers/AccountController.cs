@@ -152,12 +152,50 @@ namespace AppointmentJournal.Controllers
         }
 
         [HttpGet]
-        public ViewResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            return View();
+            try
+            {
+                var user = await _userManager.GetUserAsync(User);
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var rolesList = roles.ToList();
+
+                UserType userType;
+
+                if (rolesList.Contains(Constants.ProducersRole) & rolesList.Contains(Constants.ConsumersRole))
+                {
+                    userType = UserType.Producer;
+                }
+                else if (rolesList.Contains(Constants.ConsumersRole))
+                {
+                    userType = UserType.Consumer;
+                }
+                else
+                {
+                    userType = UserType.None;
+                }
+
+                var userProfileViewModel = new UserProfileViewModel()
+                {
+                    Name = user.UserName,
+                    City = user.City,
+                    Email = user.Email,
+                    PhoneNumber = user.PhoneNumber,
+                    UserType = userType
+                };
+
+                return View(userProfileViewModel);
+            }
+            catch (Exception ex)
+            {
+                // TODO : логировать ошибку
+                return View();
+            }
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/Account/AccessDenied")]
         public ActionResult AccessDenied()
         {

@@ -23,6 +23,7 @@ namespace AppointmentJournal.Models
     /// </summary>
     public enum UserType 
     {
+        None,
         [Display(Name ="Потребитель услуг")]
         Consumer,
         [Display(Name = "Производитель услуг")]
