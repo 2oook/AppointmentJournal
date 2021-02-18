@@ -2,4 +2,11 @@
     ViewBag.Title = Constants.AppNameUpperCase;
 }
 
-HOME PAGE
+<div class="row m-1 p-1">
+    <div id="categories" class="col-3">
+        @await Component.InvokeAsync("NavigationMenu")
+    </div>
+    <div>
+        HOME PAGE
+    </div>
+</div>

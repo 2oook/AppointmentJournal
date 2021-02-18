@@ -23,8 +23,19 @@ namespace AppointmentJournal.Controllers
             return View();
         }
 
-        public ViewResult Book()
+        public ViewResult Book(int Id)
         {
+            var serviceId = Id;
+
+            var service = serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
+
+            if (service == null)
+            {
+                return View();
+            }
+
+
+
             return View();
         }
     }

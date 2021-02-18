@@ -44,7 +44,7 @@ namespace AppointmentJournal.Infrastructure
             {
                 TagBuilder tag = new TagBuilder("a");
 
-                PageUrlValues["productPage"] = i;
+                PageUrlValues["servicePage"] = i;
                 tag.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
 
                 if (PageClassesEnabled)

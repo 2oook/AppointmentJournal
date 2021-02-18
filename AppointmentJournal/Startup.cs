@@ -67,6 +67,11 @@ namespace AppointmentJournal
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: null,
+                    pattern: "{category}/Page{servicePage:int}",
+                    defaults: new { controller = "Home", action = "List", servicePage = 1 });
+
+                endpoints.MapControllerRoute(
                     name: "empty",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 

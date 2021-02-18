@@ -24,11 +24,11 @@ namespace AppointmentJournal.Controllers
             return View();
         }
 
-        public ViewResult List(string category, int productPage = 1)
+        public ViewResult List(string category, int servicePage = 1)
         {
             var pagingInfo = new PagingInfo()
             {
-                CurrentPage = productPage,
+                CurrentPage = servicePage,
                 ItemsPerPage = PageSize,
                 TotalItems = category == null ? repository.Services.Count() : repository.Services.Where(e => e.Category.Name == category).Count()
             };
@@ -39,7 +39,7 @@ namespace AppointmentJournal.Controllers
                 PagingInfo = pagingInfo,
                 Services = repository.Services.Where(p => category == null || p.Category.Name == category)
                     .OrderBy(p => p.CategoryId)
-                    .Skip((productPage - 1) * PageSize)
+                    .Skip((servicePage - 1) * PageSize)
                     .Take(PageSize)
             };
 

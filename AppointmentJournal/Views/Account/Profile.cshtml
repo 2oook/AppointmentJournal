@@ -5,35 +5,36 @@
     ViewBag.PageType = "PROFILE";
 }
 
-<table class="table table-striped table-bordered table-sm ">
-    <tr>
-        <td>@Html.LabelFor(x => x.Name)</td>
-        <td>@Model.Name</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(x => x.City)</td>
-        <td>@Model.City</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(x => x.Email)</td>
-        <td>@Model.Email</td>
-    </tr>
-    <tr>
-        <td>@Html.LabelFor(x => x.PhoneNumber)</td>
-        <td>@Model.PhoneNumber</td>
-    </tr>
-    @{
-        if (Model.UserType != UserType.None)
-        {
-            <tr>
-                <td>@Html.LabelFor(x => x.UserType)</td>
-                <td>@Html.Display(nameof(Model.UserType))</td>
-            </tr>
+<div class="m-1 p-1 d-inline-block">
+    <table class="table table-striped table-bordered table-sm ">
+        <tr>
+            <td>@Html.LabelFor(x => x.Name)</td>
+            <td>@Model.Name</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.City)</td>
+            <td>@Model.City</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Email)</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.PhoneNumber)</td>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+        @{
+            if (Model.UserType != UserType.None)
+            {
+                <tr>
+                    <td>@Html.LabelFor(x => x.UserType)</td>
+                    <td>@Html.Display(nameof(Model.UserType))</td>
+                </tr>
+            }
         }
-    }
-</table>
-
-<div>
-    <a class="btn btn-sm btn-secondary navbar-btn ml-auto mr-1" asp-controller="Account" asp-action="Logout"><p2>LOGOUT</p2></a>
+    </table>
+    <div>
+        <a class="btn btn-sm btn-secondary navbar-btn ml-auto mr-1" asp-controller="Account" asp-action="Logout"><p2>LOGOUT</p2></a>
+    </div>
 </div>
 

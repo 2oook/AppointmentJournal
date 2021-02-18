@@ -4,12 +4,19 @@
     ViewBag.Title = Constants.AppNameUpperCase;
 }
 
-@foreach (var s in Model.Services)
-{
-    @await Html.PartialAsync("ServiceSummary", s)
-}
+<div class="row m-1 p-1">
+    <div id="categories" class="col-3">
+        @await Component.InvokeAsync("NavigationMenu")
+    </div>
+    <div>
+        @foreach (var s in Model.Services)
+        {
+            @await Html.PartialAsync("ServiceSummary", s)
+        }
 
-<div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true" page-class="btn" 
-     page-class-normal="btn-secondary" page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory" 
-     class="btn-group pull-right m-1">
+        <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true" page-class="btn"
+             page-class-normal="btn-secondary" page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
+             class="btn-group pull-right m-1">
+        </div>
+    </div>
 </div>
