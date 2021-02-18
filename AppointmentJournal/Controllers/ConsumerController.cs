@@ -1,4 +1,6 @@
 ﻿using AppointmentJournal.Models;
+using AppointmentJournal.Other;
+using AppointmentJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,10 +25,8 @@ namespace AppointmentJournal.Controllers
             return View();
         }
 
-        public ViewResult Book(int Id)
+        public ViewResult Book(int serviceId)
         {
-            var serviceId = Id;
-
             var service = serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
 
             if (service == null)
@@ -34,8 +34,18 @@ namespace AppointmentJournal.Controllers
                 return View();
             }
 
+            var dates = DateTimePicker.GetFourWeeks();
 
+            var bookViewModel = new BookAppointmentViewModel()
+            {
+                Dates = dates
+            };
 
+            return View(bookViewModel);
+        }
+
+        public ViewResult ChooseDate(DateTime chosenDate)
+        {
             return View();
         }
     }

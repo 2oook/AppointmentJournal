@@ -7,6 +7,6 @@ namespace AppointmentJournal.ViewModels
 {
     public class BookAppointmentViewModel
     {
-        public DateTime RegisterDate { get; set; }
+        public List<DateTime[]> Dates { get; set; }
     }
 }
