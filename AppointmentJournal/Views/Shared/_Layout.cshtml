@@ -23,7 +23,10 @@
         <a class="btn btn-sm btn-secondary navbar-btn ml-auto mr-1" asp-controller="Account" asp-action="Profile"><p2>PROFILE</p2></a>
     </nav>
     <div class="row m-1 p-1">
-        <div class="">
+        <div id="categories" class="col-2">
+            @await Component.InvokeAsync("NavigationMenu")
+        </div>
+        <div>
             @RenderBody()
         </div>
     </div>

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Controllers
 {
+    [Authorize(Roles = Constants.ConsumersRole + "," + Constants.ProducersRole)]
     public class ConsumerController : Controller
     {
         private IServiceRepository serviceRepository;
@@ -17,8 +18,12 @@ namespace AppointmentJournal.Controllers
             this.serviceRepository = serviceRepository;
         }
 
-        [Authorize(Roles = Constants.ConsumersRole + "," + Constants.ProducersRole)]
         public ViewResult Index() 
+        {
+            return View();
+        }
+
+        public ViewResult Book()
         {
             return View();
         }
