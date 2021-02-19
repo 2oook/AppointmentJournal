@@ -10,6 +10,7 @@ namespace AppointmentJournal.AppReversedDatabase
         public Service()
         {
             Appointments = new HashSet<Appointment>();
+            WorkDaysTimeSpans = new HashSet<WorkDaysTimeSpan>();
         }
 
         public long Id { get; set; }
@@ -21,5 +22,6 @@ namespace AppointmentJournal.AppReversedDatabase
 
         public virtual ServicesCategory Category { get; set; }
         public virtual ICollection<Appointment> Appointments { get; set; }
+        public virtual ICollection<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
     }
 }

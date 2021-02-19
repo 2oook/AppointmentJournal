@@ -9,5 +9,7 @@ namespace AppointmentJournal.Models
     public interface IServiceRepository
     {
         IQueryable<Service> Services { get; }
+
+        IQueryable<WorkDay> WorkDays { get; }
     }
 }

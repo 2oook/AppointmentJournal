@@ -48,6 +48,12 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<Appointment>(entity =>
             {
+                entity.HasIndex(e => e.AddressId, "IX_Appointments_AddressID");
+
+                entity.HasIndex(e => e.ServiceId, "IX_Appointments_ServiceID");
+
+                entity.HasIndex(e => e.WorkDayTimeSpanId, "IX_Appointments_WorkDayID");
+
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
@@ -58,7 +64,7 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.Property(e => e.Time).HasColumnType("datetime");
 
-                entity.Property(e => e.WorkDayId).HasColumnName("WorkDayID");
+                entity.Property(e => e.WorkDayTimeSpanId).HasColumnName("WorkDayTimeSpanID");
 
                 entity.HasOne(d => d.Address)
                     .WithMany(p => p.Appointments)
@@ -72,15 +78,16 @@ namespace AppointmentJournal.AppReversedDatabase
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Appointments_Services");
 
-                entity.HasOne(d => d.WorkDay)
+                entity.HasOne(d => d.WorkDayTimeSpan)
                     .WithMany(p => p.Appointments)
-                    .HasForeignKey(d => d.WorkDayId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Appointments_WorkDays");
+                    .HasForeignKey(d => d.WorkDayTimeSpanId)
+                    .HasConstraintName("FK_Appointments_WorkDaysTimeSpans");
             });
 
             modelBuilder.Entity<Service>(entity =>
             {
+                entity.HasIndex(e => e.CategoryId, "IX_Services_CategoryID");
+
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
@@ -118,6 +125,8 @@ namespace AppointmentJournal.AppReversedDatabase
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
 
+                entity.Property(e => e.Date).HasColumnType("datetime");
+
                 entity.Property(e => e.ProducerId)
                     .IsRequired()
                     .HasMaxLength(450)
@@ -126,6 +135,8 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<WorkDaysTimeSpan>(entity =>
             {
+                entity.HasIndex(e => e.WorkDayId, "IX_WorkDaysTimeSpans_WorkDayID");
+
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever()
                     .HasColumnName("ID");
@@ -134,7 +145,15 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
 
+                entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
+
                 entity.Property(e => e.WorkDayId).HasColumnName("WorkDayID");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany(p => p.WorkDaysTimeSpans)
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WorkDaysTimeSpans_Services");
 
                 entity.HasOne(d => d.WorkDay)
                     .WithMany(p => p.WorkDaysTimeSpans)

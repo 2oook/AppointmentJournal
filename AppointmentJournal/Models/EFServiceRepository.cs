@@ -16,5 +16,7 @@ namespace AppointmentJournal.Models
         }
 
         public IQueryable<Service> Services => appointmentJournalContext.Services;
+
+        public IQueryable<WorkDay> WorkDays => appointmentJournalContext.WorkDays;
     }
 }

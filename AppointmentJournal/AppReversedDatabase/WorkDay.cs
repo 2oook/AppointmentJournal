@@ -9,14 +9,14 @@ namespace AppointmentJournal.AppReversedDatabase
     {
         public WorkDay()
         {
-            Appointments = new HashSet<Appointment>();
             WorkDaysTimeSpans = new HashSet<WorkDaysTimeSpan>();
         }
 
         public long Id { get; set; }
         public string ProducerId { get; set; }
+        public DateTime Date { get; set; }
+        public bool IsEnabled { get; set; }
 
-        public virtual ICollection<Appointment> Appointments { get; set; }
         public virtual ICollection<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
     }
 }
