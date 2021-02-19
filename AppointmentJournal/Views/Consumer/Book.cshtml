@@ -1,49 +1,5 @@
-﻿@model BookAppointmentViewModel
-
-@{
+﻿@{
     ViewBag.Title = Constants.AppNameUpperCase;
-    ViewBag.PageType = "BOOK PAGE";
 }
 
-<h3 class="p-2">Выберите дату</h3>
-
-<div class="m-1 p-1 d-inline-block">
-    <table class="table table-bordered">
-        <thead>
-            <tr class="text-center">
-                <th>Пн</th>
-                <th>Вт</th>
-                <th>Ср</th>
-                <th>Чт</th>
-                <th>Пт</th>
-                <th>Сб</th>
-                <th>Вс</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var week in Model.Dates) 
-            {
-                <tr>
-                    @foreach (var day in week)
-                    {
-                        <td class="text-center"> 
-                            <form asp-action="ChooseDate" method="post">
-                                <input type="hidden" name="chosenDate" value="@day" />
-                                @if(day.Date >= DateTime.Now.Date)
-                                {
-                                    <button type="submit" class="btn btn-sm btn-secondary">
-                                        @day.ToShortDateString()
-                                    </button>
-                                }
-                                else
-                                {
-
-                                }
-                            </form> 
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+BOOK

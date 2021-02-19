@@ -1,0 +1,7 @@
+﻿delete from WorkDaysTimeSpans
+delete from Addresses
+delete from Appointments
+delete from Services
+delete from ServicesCategories
+delete from WorkDays
+

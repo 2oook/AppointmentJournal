@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace AppointmentJournal.Controllers
 {
@@ -25,26 +26,41 @@ namespace AppointmentJournal.Controllers
             return View();
         }
 
-        public ViewResult Book(int serviceId)
+        // Метод для выбора дня для записи  
+        public ViewResult ChooseDay(int serviceId)
         {
             var service = serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
+            var serviceProducerWorkDays = serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId).ToList();
 
-            if (service == null)
-            {
-                return View();
-            }
-
-            var dates = DateTimePicker.GetFourWeeks();
+            var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
 
             var bookViewModel = new BookAppointmentViewModel()
             {
-                Dates = dates
+                Dates = dates,
+                ServiceId = serviceId
             };
 
             return View(bookViewModel);
         }
 
-        public ViewResult ChooseDate(DateTime chosenDate)
+        // Метод для выбора времени записи
+        public ViewResult ChooseTime(int serviceId, DateTime chosenDate)
+        {
+            var service = serviceRepository.Services.Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay).Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
+            var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();
+
+            var appointmentAvailableTimeList = DateTimePicker.CreateAppointmentAvailableTimeList(service.Duration, timeSpansForChosenDay);
+
+            var chooseTimeViewModel = new ChooseTimeViewModel()
+            {
+                AppointmentTimesList = appointmentAvailableTimeList
+            };
+
+            return View(chooseTimeViewModel);
+        }
+
+        // Метод для бронирования времени 
+        public ViewResult Book(DateTime chosenTime) 
         {
             return View();
         }
