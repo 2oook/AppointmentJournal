@@ -39,9 +39,7 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<Address>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AddressValue).IsRequired();
             });
@@ -54,9 +52,7 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.HasIndex(e => e.WorkDayTimeSpanId, "IX_Appointments_WorkDayID");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AddressId).HasColumnName("AddressID");
 
@@ -88,9 +84,7 @@ namespace AppointmentJournal.AppReversedDatabase
             {
                 entity.HasIndex(e => e.CategoryId, "IX_Services_CategoryID");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
 
@@ -112,18 +106,14 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<ServicesCategory>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Name).IsRequired();
             });
 
             modelBuilder.Entity<WorkDay>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.Date).HasColumnType("datetime");
 
@@ -137,9 +127,7 @@ namespace AppointmentJournal.AppReversedDatabase
             {
                 entity.HasIndex(e => e.WorkDayId, "IX_WorkDaysTimeSpans_WorkDayID");
 
-                entity.Property(e => e.Id)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID");
+                entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.BeginTime).HasColumnType("datetime");
 
