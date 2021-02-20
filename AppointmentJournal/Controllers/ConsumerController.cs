@@ -35,10 +35,10 @@ namespace AppointmentJournal.Controllers
         }
 
         // Метод для выбора дня для записи  
-        public ViewResult ChooseDay(int serviceId)
+        public ViewResult ChooseDay(long serviceId)
         {
             var service = _serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
-            var serviceProducerWorkDays = _serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId).ToList();
+            var serviceProducerWorkDays = _serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans.Select(x => x.Service).Contains(service)).ToList();
 
             var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
 
@@ -53,7 +53,7 @@ namespace AppointmentJournal.Controllers
         }
 
         // Метод для выбора времени записи
-        public ViewResult ChooseTime(int serviceId, DateTime chosenDate)
+        public ViewResult ChooseTime(long serviceId, DateTime chosenDate)
         {
             var service = _serviceRepository.Services.Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay).Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
             var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();
@@ -70,7 +70,7 @@ namespace AppointmentJournal.Controllers
         }
 
         // Метод для бронирования времени 
-        public ViewResult Book(int serviceId, DateTime chosenTime, string returnUrl = "/") 
+        public ViewResult Book(long serviceId, DateTime chosenTime, string returnUrl = "/") 
         {
             try
             {

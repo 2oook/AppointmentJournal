@@ -1,4 +1,53 @@
-﻿@{
+﻿@model  ManageAppointmentsViewModel
+
+@{
     ViewBag.Title = Constants.AppNameUpperCase;
     ViewBag.PageType = "MANAGE";
 }
+
+<h4 class="p-2 m-2">Редактирование списка услуг</h4>
+
+<div class="m-1 p-1 d-inline-block ">
+
+    @foreach (var service in Model.ServicesList)
+    {
+        <div class="flex-fill p-1 m-1">
+            <table class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr class="text-center">
+                        <th>Наименование</th>
+                        <th>Длительность (мин)</th>
+                        <th>Цена</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center p-2">
+                            @service.Name
+                        </td>
+                        <td class="text-center p-2">
+                            @service.Duration
+                        </td>
+                        <td class="text-center p-2">
+                            @service.Price
+                        </td>
+                        <td class="text-center p-2">
+                            <form asp-action="RemoveService" method="post">
+                                <input type="hidden" name="serviceID" value="@service.Id" />
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    Удалить
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+
+    <div class="flex-fill p-1 m-1">
+        <a class="btn btn-sm btn-info" asp-controller="Producer" asp-action="AddService">Добавить сервис</a>
+    </div>
+
+</div>

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.ViewModels
 {
-    public class BookAppointmentViewModel
+    public class ManageAppointmentsViewModel
     {
-        public List<WorkDay[]> Dates { get; set; }
-
-        public string ServiceName { get; set; }
-
-        public long ServiceId { get; set; }
+        public List<Service> ServicesList { get; set; }
     }
 }

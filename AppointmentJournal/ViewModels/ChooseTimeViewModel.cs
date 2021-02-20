@@ -10,6 +10,6 @@ namespace AppointmentJournal.ViewModels
     {
         public List<List<AppointmentTime>> AppointmentTimesList { get; set; }
 
-        public int ServiceId { get; set; }
+        public long ServiceId { get; set; }
     }
 }
