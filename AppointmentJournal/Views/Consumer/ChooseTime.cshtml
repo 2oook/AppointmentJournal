@@ -15,12 +15,13 @@
         {
             if (appointmentTime.IsAvailable)
             {
-                <form asp-controller="Consumer" asp-action="Book">
-                    <input type="hidden" name="chosenTime" value="@appointmentTime.Time" />
-                    <button type="submit" class="btn btn-success p-2 m-1">
-                        @appointmentTime.Time.ToShortTimeString()
-                    </button>
-                </form>
+            <form asp-controller="Consumer" asp-action="Book">
+                <input type="hidden" name="chosenTime" value="@appointmentTime.Time" />
+                <input type="hidden" name="serviceId" value="@Model.ServiceId" />
+                <button type="submit" class="btn btn-success p-2 m-1">
+                    @appointmentTime.Time.ToShortTimeString()
+                </button>
+            </form>
             }
             else
             {

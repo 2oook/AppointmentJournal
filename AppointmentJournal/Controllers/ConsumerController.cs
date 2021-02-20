@@ -8,17 +8,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using AppointmentJournal.AppReversedDatabase;
+using Microsoft.Extensions.DependencyInjection;
+using AppointmentJournal.Infrastructure;
 
 namespace AppointmentJournal.Controllers
 {
     [Authorize(Roles = Constants.ConsumersRole + "," + Constants.ProducersRole)]
     public class ConsumerController : Controller
     {
-        private IServiceRepository serviceRepository;
+        private IServiceProvider _serviceProvider;
+        private IServiceRepository _serviceRepository;
+        private readonly UserManager<User> _userManager;
 
-        public ConsumerController(IServiceRepository serviceRepository)
+        public ConsumerController(IServiceProvider services, IServiceRepository serviceRepository, UserManager<User> userManager)
         {
-            this.serviceRepository = serviceRepository;
+            _serviceProvider = services;
+            _serviceRepository = serviceRepository;
+            _userManager = userManager;
         }
 
         public ViewResult Index() 
@@ -29,8 +37,8 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора дня для записи  
         public ViewResult ChooseDay(int serviceId)
         {
-            var service = serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
-            var serviceProducerWorkDays = serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId).ToList();
+            var service = _serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
+            var serviceProducerWorkDays = _serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId).ToList();
 
             var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
 
@@ -46,23 +54,45 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора времени записи
         public ViewResult ChooseTime(int serviceId, DateTime chosenDate)
         {
-            var service = serviceRepository.Services.Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay).Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
+            var service = _serviceRepository.Services.Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay).Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
             var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();
 
             var appointmentAvailableTimeList = DateTimePicker.CreateAppointmentAvailableTimeList(service.Duration, timeSpansForChosenDay);
 
             var chooseTimeViewModel = new ChooseTimeViewModel()
             {
-                AppointmentTimesList = appointmentAvailableTimeList
+                AppointmentTimesList = appointmentAvailableTimeList,
+                ServiceId = serviceId
             };
 
             return View(chooseTimeViewModel);
         }
 
         // Метод для бронирования времени 
-        public ViewResult Book(DateTime chosenTime) 
+        public RedirectResult Book(int serviceId, DateTime chosenTime, string returnUrl = "/") 
         {
-            return View();
+            var userId = _userManager.GetUserId(User);
+
+            var service = _serviceRepository.Services
+                .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay)
+                .Include(x => x.Appointments).ThenInclude(x => x.Address)
+                .SingleOrDefault(s => s.Id == serviceId);
+            var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenTime.Date.Date).ToList();
+
+            var appointment = new Appointment()
+            {
+                Address = service.Appointments.First().Address,
+                Time = chosenTime,
+                WorkDayTimeSpan = timeSpansForChosenDay.First()
+            };
+
+            service.Appointments.Add(appointment);
+
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+            context.SaveChanges();
+
+            return Redirect(returnUrl);
         }
     }
 }

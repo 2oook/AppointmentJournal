@@ -9,5 +9,7 @@ namespace AppointmentJournal.ViewModels
     public class ChooseTimeViewModel
     {
         public List<List<AppointmentTime>> AppointmentTimesList { get; set; }
+
+        public int ServiceId { get; set; }
     }
 }
