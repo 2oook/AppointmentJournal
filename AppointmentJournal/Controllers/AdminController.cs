@@ -19,11 +19,9 @@ namespace AppointmentJournal.Controllers
         [HttpPost]
         public IActionResult SeedDatabaseWithFakeData()
         {          
-            FakeServiceRepository.CreateFakeUsersInDB(HttpContext.RequestServices).Wait();
+            var fakeDataProvider = new FakeDataForDBProvider(HttpContext.RequestServices);
 
-            var fakeServiceRepository = new FakeServiceRepository();
-
-            fakeServiceRepository.PopulateDBWithFakeData(HttpContext.RequestServices);
+            fakeDataProvider.PopulateDBWithFakeData(HttpContext.RequestServices);
 
             return RedirectToAction(nameof(Index));
         }
