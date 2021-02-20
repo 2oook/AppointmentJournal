@@ -10,6 +10,8 @@ namespace AppointmentJournal.ViewModels
     {
         public List<WorkDay[]> Dates { get; set; }
 
+        public string ServiceName { get; set; }
+
         public int ServiceId { get; set; }
     }
 }

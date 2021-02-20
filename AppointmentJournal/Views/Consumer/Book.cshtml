@@ -2,4 +2,17 @@
     ViewBag.Title = Constants.AppNameUpperCase;
 }
 
-BOOK
+@if (ViewBag.Result)
+{
+    <div class="badge-success p-2 m-2">
+        Бронирование успешно
+    </div>
+}
+else
+{
+    <div class="badge-danger p-2 m-2">
+        Ошибка при бронировании
+    </div>
+}
+
+

@@ -45,7 +45,8 @@ namespace AppointmentJournal.Controllers
             var bookViewModel = new BookAppointmentViewModel()
             {
                 Dates = dates,
-                ServiceId = serviceId
+                ServiceId = serviceId,
+                ServiceName = service.Name
             };
 
             return View(bookViewModel);
@@ -69,30 +70,41 @@ namespace AppointmentJournal.Controllers
         }
 
         // Метод для бронирования времени 
-        public RedirectResult Book(int serviceId, DateTime chosenTime, string returnUrl = "/") 
+        public ViewResult Book(int serviceId, DateTime chosenTime, string returnUrl = "/") 
         {
-            var userId = _userManager.GetUserId(User);
-
-            var service = _serviceRepository.Services
-                .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay)
-                .Include(x => x.Appointments).ThenInclude(x => x.Address)
-                .SingleOrDefault(s => s.Id == serviceId);
-            var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenTime.Date.Date).ToList();
-
-            var appointment = new Appointment()
+            try
             {
-                Address = service.Appointments.First().Address,
-                Time = chosenTime,
-                WorkDayTimeSpan = timeSpansForChosenDay.First()
-            };
+                var userId = _userManager.GetUserId(User);
 
-            service.Appointments.Add(appointment);
+                var service = _serviceRepository.Services
+                    .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay)
+                    .Include(x => x.Appointments).ThenInclude(x => x.Address)
+                    .SingleOrDefault(s => s.Id == serviceId);
+                var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenTime.Date.Date).ToList();
 
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+                var appointment = new Appointment()
+                {
+                    Address = service.Appointments.First().Address,
+                    Time = chosenTime,
+                    WorkDayTimeSpan = timeSpansForChosenDay.First()
+                };
 
-            context.SaveChanges();
+                service.Appointments.Add(appointment);
 
-            return Redirect(returnUrl);
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+                context.SaveChanges();
+
+                ViewBag.Result = true;
+
+                return View();
+            }
+            catch
+            {
+                ViewBag.Result = false;
+
+                return View();
+            }           
         }
     }
 }
