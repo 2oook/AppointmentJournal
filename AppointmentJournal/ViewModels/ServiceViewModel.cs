@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.ViewModels
 {
-    public class AddServiceViewModel
+    public class ServiceViewModel
     {
         public Service Service { get; set; }
 

@@ -29,11 +29,6 @@ namespace AppointmentJournal.Controllers
             _userManager = userManager;
         }
 
-        public ViewResult Index() 
-        {
-            return View();
-        }
-
         // Метод для выбора дня для записи  
         public ViewResult ChooseDay(long serviceId)
         {
