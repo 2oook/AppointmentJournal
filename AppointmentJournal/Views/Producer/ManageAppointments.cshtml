@@ -20,15 +20,14 @@
                         <th>Время (мин)</th>
                         <th>Цена (руб)</th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="text-center p-2">
+                        <td class="text-center text-wrap p-2">
                             @service.Category.Name
                         </td>
-                        <td class="text-center p-2">
+                        <td class="text-center text-wrap p-2">
                             @service.Name
                         </td>
                         <td class="text-center p-2">
@@ -38,20 +37,32 @@
                             @service.Price
                         </td>
                         <td class="text-center p-2">
-                            <form asp-controller="Producer" asp-action="EditService" method="get">
-                                <input type="hidden" name="serviceID" value="@service.Id" />
-                                <button type="submit" class="btn btn-sm btn-warning">
-                                    Редактировать
-                                </button>
-                            </form>
-                        </td>
-                        <td class="text-center p-2">
-                            <form asp-controller="Producer" asp-action="RemoveService" method="post">
-                                <input type="hidden" name="serviceID" value="@service.Id" />
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    Удалить
-                                </button>
-                            </form>
+                            <div class="m-1">
+                                <form asp-controller="Producer" asp-action="ManageService" method="get">
+                                    <input type="hidden" name="serviceID" value="@service.Id" />
+                                    <button type="submit" class="btn btn-sm btn-primary container-fluid">
+                                        Управлять
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="m-1">
+                                <form asp-controller="Producer" asp-action="EditService" method="get">
+                                    <input type="hidden" name="serviceID" value="@service.Id" />
+                                    <button type="submit" class="btn btn-sm btn-info container-fluid">
+                                        Редактировать
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="m-1">
+                                <form asp-controller="Producer" asp-action="RemoveService" method="post">
+                                    <input type="hidden" name="serviceID" value="@service.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger p-1">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                 </tbody>

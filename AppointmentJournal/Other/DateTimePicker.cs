@@ -36,6 +36,7 @@ namespace AppointmentJournal.Other
                         if (index == -1) index += 7;  // воскресенье последний день недели
                     }
 
+                    // получить дату, если она есть в списке рабочих дней
                     var dateInWorkDaysList = workDaysList.SingleOrDefault(x => x.Date.Date == date.Date);
 
                     if (dateInWorkDaysList != null && dateInWorkDaysList.Date.Date == date.Date)
@@ -57,9 +58,9 @@ namespace AppointmentJournal.Other
         }
 
         // Метод для получения промежутков времени для записи заданных производителем и разбитых по заданным порциям
-        public static List<List<AppointmentTime>> CreateAppointmentAvailableTimeList(int appointmentDurationInMinutes, List<WorkDaysTimeSpan> timeSpans)
+        public static Dictionary<WorkDaysTimeSpan, List<AppointmentTime>> CreateAppointmentAvailableTimeList(int appointmentDurationInMinutes, List<WorkDaysTimeSpan> timeSpans)
         {
-            var appointmentTimeByTimeSpansList = new List<List<AppointmentTime>>();
+            var appointmentTimeByTimeSpansList = new Dictionary<WorkDaysTimeSpan,List<AppointmentTime>>();
 
             foreach (var timeSpan in timeSpans)
             {
@@ -92,7 +93,7 @@ namespace AppointmentJournal.Other
                     currentTime = currentTime.AddMinutes(appointmentDurationInMinutes);
                 }
 
-                appointmentTimeByTimeSpansList.Add(appointmentTimeList);
+                appointmentTimeByTimeSpansList.Add(timeSpan, appointmentTimeList);
             }
 
             return appointmentTimeByTimeSpansList;

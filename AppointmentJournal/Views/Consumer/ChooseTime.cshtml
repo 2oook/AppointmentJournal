@@ -11,7 +11,7 @@
     @foreach (var appointmentTimeList in Model.AppointmentTimesList)
     {
     <div class="d-flex flex-wrap">
-        @foreach (var appointmentTime in appointmentTimeList)
+        @foreach (var appointmentTime in appointmentTimeList.Value)
         {
             if (appointmentTime.IsAvailable)
             {

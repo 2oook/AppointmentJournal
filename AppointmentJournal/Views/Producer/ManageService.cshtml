@@ -1,0 +1,59 @@
+﻿@model BookAppointmentViewModel
+
+@{
+    ViewBag.Title = Constants.AppNameUpperCase;
+    ViewBag.PageType = "Управление услугой";
+}
+
+<div class="m-1 p-1 d-inline-block ">
+    <table class="table table-bordered">
+        <thead>
+            <tr class="text-center">
+                <th>Пн</th>
+                <th>Вт</th>
+                <th>Ср</th>
+                <th>Чт</th>
+                <th>Пт</th>
+                <th>Сб</th>
+                <th>Вс</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var week in Model.Dates)
+            {
+                <tr>
+                    @foreach (var day in week)
+                    {
+                        <td class="text-center p-2">
+                            @if (day != null && day.Date.Date >= DateTime.Now.Date)
+                            {
+                                <form asp-controller="Producer" asp-action="ManageWorkDay" method="get">
+                                    <input type="hidden" name="chosenDateInTicks" value="@day.Date.Ticks" />
+                                    <input type="hidden" name="serviceId" value="@Model.ServiceId" />
+
+                                    @if (day.IsEnabled)
+                                    {
+                                        <button type="submit" class="btn btn-success">
+                                            @day.Date.ToShortDateString()
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-secondary">
+                                            @day.Date.ToShortDateString()
+                                        </button>
+                                    }
+
+                                </form> 
+                            }
+                            else
+                            {
+
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

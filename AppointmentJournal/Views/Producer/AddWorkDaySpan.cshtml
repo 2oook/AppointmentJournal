@@ -1,0 +1,31 @@
+﻿@model AddWorkDaySpanViewModel
+
+@{
+    ViewBag.Title = Constants.AppNameUpperCase;
+    ViewBag.PageType = "Добавление периода рабочего времени";
+}
+
+<div class="text-danger m-1 p-1 " asp-validation-summary="All"></div>
+
+<div class="m-1 p-1 d-inline-block ">
+
+    <form asp-controller="Producer" asp-action="AddWorkDaySpan" method="post">
+        <input type="hidden" name="serviceId" value="@Model.ServiceId" />
+        <input type="hidden" name="chosenDate" value="@Model.ChosenDate" />
+        <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+        <div class="row m-1">
+            <div class="form-group m-1">
+                <label>Начало</label><br />
+                <input type="number" min="0" max="23" class="form-control" asp-for="BeginHour" />
+            </div>
+            <div class="form-group m-1">
+                <label>Конец</label><br />
+                <input type="number" min="0" max="23" class="form-control" asp-for="EndHour" />
+            </div>
+            <button type="submit" class="btn btn-primary m-1">
+                Принять
+            </button>
+        </div>
+    </form>
+</div>

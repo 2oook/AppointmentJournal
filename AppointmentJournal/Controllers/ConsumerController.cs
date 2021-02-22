@@ -3,15 +3,12 @@ using AppointmentJournal.Other;
 using AppointmentJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AppointmentJournal.AppReversedDatabase;
 using Microsoft.Extensions.DependencyInjection;
-using AppointmentJournal.Infrastructure;
+using System;
+using System.Linq;
 
 namespace AppointmentJournal.Controllers
 {
@@ -33,7 +30,9 @@ namespace AppointmentJournal.Controllers
         public ViewResult ChooseDay(long serviceId)
         {
             var service = _serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
-            var serviceProducerWorkDays = _serviceRepository.WorkDays.Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans.Select(x => x.Service).Contains(service)).ToList();
+            var serviceProducerWorkDays = _serviceRepository.WorkDays
+                .Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans
+                .Select(x => x.Service).Contains(service)).ToList();
 
             var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
 
@@ -50,7 +49,11 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора времени записи
         public ViewResult ChooseTime(long serviceId, DateTime chosenDate)
         {
-            var service = _serviceRepository.Services.Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay).Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
+            var service = _serviceRepository.Services
+                .Include(x => x.WorkDaysTimeSpans)
+                .ThenInclude(x => x.WorkDay)
+                .Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
+
             var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();
 
             var appointmentAvailableTimeList = DateTimePicker.CreateAppointmentAvailableTimeList(service.Duration, timeSpansForChosenDay);
@@ -73,15 +76,23 @@ namespace AppointmentJournal.Controllers
 
                 var service = _serviceRepository.Services
                     .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay)
-                    .Include(x => x.Appointments).ThenInclude(x => x.Address)
+                    .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.Address)
+                    .Include(x => x.Appointments)
                     .SingleOrDefault(s => s.Id == serviceId);
+
                 var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenTime.Date.Date).ToList();
+
+                var neededTimeSpan = timeSpansForChosenDay.SingleOrDefault(x => (x.BeginTime.Hour <= chosenTime.Hour & x.EndTime.Hour >= chosenTime.Hour));
+
+                if (neededTimeSpan == null)
+                {
+                    throw new Exception("neededTimeSpan = null");
+                }
 
                 var appointment = new Appointment()
                 {
-                    Address = service.Appointments.First().Address,
                     Time = chosenTime,
-                    WorkDayTimeSpan = timeSpansForChosenDay.First()
+                    WorkDayTimeSpan = neededTimeSpan
                 };
 
                 service.Appointments.Add(appointment);
