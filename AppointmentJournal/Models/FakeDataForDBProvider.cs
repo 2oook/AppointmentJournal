@@ -104,6 +104,7 @@ namespace AppointmentJournal.Models
                     0,
                     new WorkDaysTimeSpan()
                     {
+                        Address = addressesDictionary[0],
                         BeginTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 10, 00, 00),
                         EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 15, 00, 00),
                         Service = servicesDictionary[0],
@@ -113,6 +114,7 @@ namespace AppointmentJournal.Models
                     1,
                     new WorkDaysTimeSpan()
                     {
+                        Address = addressesDictionary[1],
                         BeginTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 15, 00, 00),
                         EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 19, 00, 00),
                         Service = servicesDictionary[1],
@@ -122,6 +124,7 @@ namespace AppointmentJournal.Models
                     2,
                     new WorkDaysTimeSpan()
                     {
+                        Address = addressesDictionary[2],
                         BeginTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(10).Month, DateTime.Now.AddDays(10).Day, 8, 00, 00),
                         EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(10).Month, DateTime.Now.AddDays(10).Day, 17, 00, 00),
                         Service = servicesDictionary[2],
@@ -131,6 +134,7 @@ namespace AppointmentJournal.Models
                     3,
                     new WorkDaysTimeSpan()
                     {
+                        Address = addressesDictionary[2],
                         BeginTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 10, 00, 00),
                         EndTime = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 20, 00, 00),
                         Service = servicesDictionary[3],
@@ -188,7 +192,6 @@ namespace AppointmentJournal.Models
                     0,
                     new Appointment()
                     {
-                        Address = addressesDictionary[0],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 12, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[0]
                     }
@@ -197,7 +200,6 @@ namespace AppointmentJournal.Models
                     1,
                     new Appointment()
                     {
-                        Address = addressesDictionary[0],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 12, 30, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[0]
                     }
@@ -206,7 +208,6 @@ namespace AppointmentJournal.Models
                     2,
                     new Appointment()
                     {
-                        Address = addressesDictionary[0],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 17, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[1]
                     }
@@ -215,7 +216,6 @@ namespace AppointmentJournal.Models
                     3,
                     new Appointment()
                     {
-                        Address = addressesDictionary[1],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(10).Month, DateTime.Now.AddDays(10).Day, 8, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[2]
                     }
@@ -224,7 +224,6 @@ namespace AppointmentJournal.Models
                     4,
                     new Appointment()
                     {
-                        Address = addressesDictionary[2],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 10, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[3]
                     }
@@ -233,7 +232,6 @@ namespace AppointmentJournal.Models
                     5,
                     new Appointment()
                     {
-                        Address = addressesDictionary[2],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 11, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[3]
                     }
@@ -242,7 +240,6 @@ namespace AppointmentJournal.Models
                     6,
                     new Appointment()
                     {
-                        Address = addressesDictionary[2],
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 12, 00, 00),
                         WorkDayTimeSpan = workDaysTimeSpans[3]
                     }

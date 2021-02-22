@@ -46,27 +46,17 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<Appointment>(entity =>
             {
-                entity.HasIndex(e => e.AddressId, "IX_Appointments_AddressID");
-
                 entity.HasIndex(e => e.ServiceId, "IX_Appointments_ServiceID");
 
                 entity.HasIndex(e => e.WorkDayTimeSpanId, "IX_Appointments_WorkDayID");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
-                entity.Property(e => e.AddressId).HasColumnName("AddressID");
-
                 entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
 
                 entity.Property(e => e.Time).HasColumnType("datetime");
 
                 entity.Property(e => e.WorkDayTimeSpanId).HasColumnName("WorkDayTimeSpanID");
-
-                entity.HasOne(d => d.Address)
-                    .WithMany(p => p.Appointments)
-                    .HasForeignKey(d => d.AddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Appointments_Addresses");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Appointments)
@@ -129,6 +119,8 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.AddressId).HasColumnName("AddressID");
+
                 entity.Property(e => e.BeginTime).HasColumnType("datetime");
 
                 entity.Property(e => e.EndTime).HasColumnType("datetime");
@@ -137,10 +129,15 @@ namespace AppointmentJournal.AppReversedDatabase
 
                 entity.Property(e => e.WorkDayId).HasColumnName("WorkDayID");
 
+                entity.HasOne(d => d.Address)
+                    .WithMany(p => p.WorkDaysTimeSpans)
+                    .HasForeignKey(d => d.AddressId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_WorkDaysTimeSpans_Addresses");
+
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.WorkDaysTimeSpans)
                     .HasForeignKey(d => d.ServiceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WorkDaysTimeSpans_Services");
 
                 entity.HasOne(d => d.WorkDay)
