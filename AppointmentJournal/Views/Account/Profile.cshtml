@@ -39,7 +39,10 @@
         if (Model.UserType == UserType.Producer)
         {
             <div class="p-1 m-1 ">
-                <a class="btn btn-info" asp-controller="Producer" asp-action="ManageAppointments">Управление расписанием работы</a>
+                <a class="btn btn-info container-fluid" asp-controller="Producer" asp-action="ManageAppointments">Управление расписанием работы</a>
+            </div>
+            <div class="p-1 m-1 ">
+                <a class="btn btn-info container-fluid" asp-controller="Producer" asp-action="ManageAddresses">Управление адресами</a>
             </div>
         }
     }

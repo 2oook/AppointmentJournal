@@ -13,19 +13,30 @@
         <input type="hidden" name="serviceId" value="@Model.ServiceId" />
         <input type="hidden" name="chosenDate" value="@Model.ChosenDate" />
         <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+        <input type="hidden" asp-for="Addresses" />
 
-        <div class="row m-1">
-            <div class="form-group m-1">
-                <label>Начало</label><br />
-                <input type="number" min="0" max="23" class="form-control" asp-for="BeginHour" />
+        <div class="border">
+            <div class="m-1 p-1">Период</div>
+            <div class="row m-1">
+                <div class="form-group m-1">
+                    <label>Начало</label><br />
+                    <input type="number" min="0" max="23" class="form-control" asp-for="BeginHour" />
+                </div>
+                <div class="form-group m-1">
+                    <label>Конец</label><br />
+                    <input type="number" min="0" max="23" class="form-control" asp-for="EndHour" />
+                </div>
+
             </div>
-            <div class="form-group m-1">
-                <label>Конец</label><br />
-                <input type="number" min="0" max="23" class="form-control" asp-for="EndHour" />
-            </div>
-            <button type="submit" class="btn btn-primary m-1">
-                Принять
-            </button>
         </div>
+        <div class="row border m-0 p-2">
+            <div class="form-group">
+                <label>Адрес</label><br />
+                <select class="form-control" asp-for="AddressId" asp-items="@Model.Addresses"></select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary  container-fluid">
+            Принять
+        </button>
     </form>
 </div>

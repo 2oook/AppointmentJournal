@@ -1,0 +1,57 @@
+﻿@model ManageAddressesViewModel
+
+@{
+    ViewBag.Title = Constants.AppNameUpperCase;
+    ViewBag.PageType = "Управление адресами";
+}
+
+<div class="m-1 p-1 d-inline-block ">
+
+    @if (Model.AddressList.Count != 0) 
+    { 
+        @foreach (var address in Model.AddressList)
+        {
+            <div class="flex-fill p-1 m-1">
+                <table class="table table-striped table-bordered table-sm">
+                    <tbody>
+                        <tr>
+                            <td class="text-center text-wrap p-2">
+                                @address.AddressValue
+                            </td>
+                            <td class="text-center p-2">
+                                <div class="m-1">
+                                    <form asp-controller="Producer" asp-action="EditAddress" method="get">
+                                        <input type="hidden" name="addressID" value="@address.Id" />
+                                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                                        <button type="submit" class="btn btn-sm btn-info container-fluid">
+                                            Редактировать
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="m-1">
+                                    <form asp-controller="Producer" asp-action="RemoveAddress" method="post">
+                                        <input type="hidden" name="addressID" value="@address.Id" />
+                                        <button type="submit" class="btn btn-sm btn-danger p-1">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+
+    <div class="flex-fill p-1 m-1">
+        <form asp-controller="Producer" asp-action="AddAddress" method="get">
+            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+            <button type="submit" class="btn btn-sm btn-info p-2 m-1">
+                Добавить адрес
+            </button>
+        </form>
+    </div>
+
+</div>
