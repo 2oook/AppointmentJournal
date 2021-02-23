@@ -1,5 +1,8 @@
-﻿using AppointmentJournal.Models;
+﻿using AppointmentJournal.AppReversedDatabase;
+using AppointmentJournal.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,17 +11,17 @@ namespace AppointmentJournal.Components
     // Компонент представления навигационного меню категорий
     public class NavigationMenuViewComponent : ViewComponent
     {
-        private IServiceRepository repository;
+        private AppointmentJournalDbContext context;
 
-        public NavigationMenuViewComponent(IServiceRepository repo)
+        public NavigationMenuViewComponent(IServiceProvider _serviceProvider)
         {
-            repository = repo;
+            context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
         }
 
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];
-            return View(repository.Services.Select(x => x.Category.Name).Distinct().OrderBy(x => x));
+            return View(context.Services.Select(x => x.Category.Name).Distinct().OrderBy(x => x));
         }
     }
 }

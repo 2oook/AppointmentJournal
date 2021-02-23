@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AppointmentJournal.AppReversedDatabase
 {
-    public partial class AppointmentJournalContext : DbContext
+    public partial class AppointmentJournalDbContext : DbContext
     {
-        public AppointmentJournalContext()
+        public AppointmentJournalDbContext()
         {
         }
 
-        public AppointmentJournalContext(DbContextOptions<AppointmentJournalContext> options)
+        public AppointmentJournalDbContext(DbContextOptions<AppointmentJournalDbContext> options)
             : base(options)
         {
         }

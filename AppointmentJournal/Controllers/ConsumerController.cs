@@ -16,21 +16,21 @@ namespace AppointmentJournal.Controllers
     public class ConsumerController : Controller
     {
         private IServiceProvider _serviceProvider;
-        private IServiceRepository _serviceRepository;
         private readonly UserManager<User> _userManager;
 
-        public ConsumerController(IServiceProvider services, IServiceRepository serviceRepository, UserManager<User> userManager)
+        public ConsumerController(IServiceProvider services, UserManager<User> userManager)
         {
             _serviceProvider = services;
-            _serviceRepository = serviceRepository;
             _userManager = userManager;
         }
 
         // Метод для выбора дня для записи  
         public ViewResult ChooseDay(long serviceId)
         {
-            var service = _serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
-            var serviceProducerWorkDays = _serviceRepository.WorkDays
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+
+            var service = context.Services.SingleOrDefault(s => s.Id == serviceId);
+            var serviceProducerWorkDays = context.WorkDays
                 .Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans
                 .Select(x => x.Service).Contains(service)).ToList();
 
@@ -49,7 +49,9 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора времени записи
         public ViewResult ChooseTime(long serviceId, DateTime chosenDate)
         {
-            var service = _serviceRepository.Services
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+
+            var service = context.Services
                 .Include(x => x.WorkDaysTimeSpans)
                 .ThenInclude(x => x.WorkDay)
                 .Include(x => x.WorkDaysTimeSpans)
@@ -74,9 +76,11 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+
                 var userId = _userManager.GetUserId(User);
 
-                var service = _serviceRepository.Services
+                var service = context.Services
                     .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.WorkDay)
                     .Include(x => x.WorkDaysTimeSpans).ThenInclude(x => x.Address)
                     .Include(x => x.Appointments)
@@ -98,8 +102,6 @@ namespace AppointmentJournal.Controllers
                 };
 
                 service.Appointments.Add(appointment);
-
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 context.SaveChanges();
 

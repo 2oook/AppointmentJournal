@@ -312,7 +312,7 @@ namespace AppointmentJournal.Models
         // Метод для заполнения БД тестовыми данными
         public void PopulateDBWithFakeData(IServiceProvider services)
         {
-            AppointmentJournalContext context = services.GetRequiredService<AppointmentJournalContext>();
+            AppointmentJournalDbContext context = services.GetRequiredService<AppointmentJournalDbContext>();
 
             if (!context.Services.Any())
             {

@@ -29,11 +29,9 @@ namespace AppointmentJournal
         {
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<AppIdentityDbContext>().AddDefaultTokenProviders();
 
-            services.AddDbContext<AppointmentJournalContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
+            services.AddDbContext<AppointmentJournalDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
 
             services.AddDbContext<AppIdentityDbContext>(options => options.UseSqlServer(Configuration["Data:AppointmentJournalIdentity:ConnectionString"]));
-
-            services.AddTransient<IServiceRepository, EFServiceRepository>();
 
             services.AddControllersWithViews();
 
