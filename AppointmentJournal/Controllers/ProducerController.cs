@@ -5,6 +5,7 @@ using AppointmentJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -42,8 +43,122 @@ namespace AppointmentJournal.Controllers
             return View(manageAppointmentsViewModel);
         }
 
+        public ViewResult ManageAddresses() 
+        {
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+            var userId = _userManager.GetUserId(User);
+
+            var addressesList = context.Addresses.Where(x => x.ProducerId == userId).ToList();
+
+            var model = new ManageAddressesViewModel() 
+            {
+                AddressList = addressesList
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ViewResult EditAddress(long addressId, string returnUrl)
+        {
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+            var userId = _userManager.GetUserId(User);
+            var address = context.Addresses.SingleOrDefault(x => x.ProducerId == userId & x.Id == addressId);
+
+            var model = new AddressViewModel() 
+            {
+                Address = address,
+                ReturnUrl = returnUrl
+            };
+
+            return View(model);
+        }
+
         [HttpPost]
-        public IActionResult AddService(ServiceViewModel addServiceViewModel, string returnUrl)
+        public IActionResult EditAddress(AddressViewModel addressViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO проверка полей сервиса 
+
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+                var userId = _userManager.GetUserId(User);
+                var address = context.Addresses.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(x => x.ProducerId == userId & x.Id == addressViewModel.Address.Id);
+
+                address.AddressValue = addressViewModel.Address.AddressValue;
+
+                context.SaveChanges();
+
+                return Redirect(addressViewModel.ReturnUrl);
+            }
+
+            return View(addressViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult RemoveAddress(long addressId)
+        {
+            try
+            {
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+                var userId = _userManager.GetUserId(User);
+                var address = context.Addresses.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(x => x.ProducerId == userId & x.Id == addressId);
+
+                if (address.WorkDaysTimeSpans.Count > 0)
+                {
+                    throw new Exception("С данным адресом связаны один или несколько периодов рабочего времени");
+                }
+
+                context.Addresses.Remove(address);
+                context.SaveChanges();
+            }
+            catch
+            {
+                // TODO конкретизировать ошибку
+                return View("Error", "Невозможно удалить адрес");
+            }
+
+            return RedirectToAction(nameof(ManageAddresses));
+        }
+
+        [HttpGet]
+        public ViewResult AddAddress(string returnUrl)
+        {
+            var model = new AddressViewModel() 
+            {
+                ReturnUrl = returnUrl
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult AddAddress(AddressViewModel addAddressViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // TODO проверка полей сервиса 
+
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+                var userId = _userManager.GetUserId(User);
+
+                addAddressViewModel.Address.ProducerId = userId;
+
+                context.Addresses.Add(addAddressViewModel.Address);
+                context.SaveChanges();
+
+                return Redirect(addAddressViewModel.ReturnUrl);
+            }
+
+            return View(addAddressViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddService(ServiceViewModel addServiceViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -71,6 +186,20 @@ namespace AppointmentJournal.Controllers
         public ViewResult AddService()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ViewResult EditService(long serviceId)
+        {
+            var service = _serviceRepository.Services.Include(x => x.Category).SingleOrDefault(s => s.Id == serviceId);
+
+            var serviceViewModel = new ServiceViewModel()
+            {
+                Service = service,
+                Category = service.Category
+            };
+
+            return View(serviceViewModel);
         }
 
         [HttpPost]
@@ -138,20 +267,6 @@ namespace AppointmentJournal.Controllers
         }
 
         [HttpGet]
-        public ViewResult EditService(long serviceId)
-        {
-            var service = _serviceRepository.Services.Include(x => x.Category).SingleOrDefault(s => s.Id == serviceId);
-
-            var serviceViewModel = new ServiceViewModel() 
-            {
-                Service = service,
-                Category = service.Category
-            };
-
-            return View(serviceViewModel);
-        }
-
-        [HttpGet]
         public ViewResult ManageService(long serviceId)
         {
             var service = _serviceRepository.Services.SingleOrDefault(s => s.Id == serviceId);
@@ -179,6 +294,8 @@ namespace AppointmentJournal.Controllers
             var service = _serviceRepository.Services
                 .Include(x => x.WorkDaysTimeSpans)
                 .ThenInclude(x => x.WorkDay)
+                .Include(x => x.WorkDaysTimeSpans)
+                .ThenInclude(x => x.Address)
                 .Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
 
             var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();
@@ -240,12 +357,17 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public IActionResult AddWorkDaySpan(long serviceId, long chosenDateInTicks, string returnUrl)
         {
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+            var userId = _userManager.GetUserId(User);
+            var addresses = context.Addresses.Where(x => x.ProducerId == userId).Select(x => new SelectListItem { Value = x.Id.ToString() , Text = x.AddressValue }).ToList();
+
             var chosenDate = new DateTime(chosenDateInTicks);
 
             var model = new AddWorkDaySpanViewModel()
             {
                  ChosenDate = chosenDate,
                  ServiceId = serviceId,
+                 Addresses = addresses,
                  ReturnUrl = returnUrl
             };
 
@@ -308,12 +430,14 @@ namespace AppointmentJournal.Controllers
                     }
                 }
 
+                var address = context.Addresses.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(x => x.ProducerId == userId & x.Id == model.AddressId);
+
                 var workDayTimeSpan = new WorkDaysTimeSpan()
                 {
                     BeginTime = modelBeginTime,
                     EndTime = modelEndTime,
                     WorkDay = workDay,
-                    Address = new Address() { AddressValue = "ТЕСТ" }
+                    Address = address
                 };
 
                 service.WorkDaysTimeSpans.Add(workDayTimeSpan);

@@ -52,6 +52,8 @@ namespace AppointmentJournal.Controllers
             var service = _serviceRepository.Services
                 .Include(x => x.WorkDaysTimeSpans)
                 .ThenInclude(x => x.WorkDay)
+                .Include(x => x.WorkDaysTimeSpans)
+                .ThenInclude(x => x.Address)
                 .Include(x => x.Appointments).SingleOrDefault(s => s.Id == serviceId);
 
             var timeSpansForChosenDay = service.WorkDaysTimeSpans.Where(ts => ts.WorkDay.Date.Date == chosenDate.Date.Date).ToList();

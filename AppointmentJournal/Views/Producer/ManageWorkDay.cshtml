@@ -5,29 +5,38 @@
     ViewBag.PageType = "Управление рабочим днём";
 }
 
-<div class="m-1 p-1 d-inline-block ">
+<div class="d-inline-block m-1 p-1">
 
     @if (Model.AppointmentTimesList.Count != 0 & Model.WorkDay != null)
     {
-        @foreach (var appointmentTimeList in Model.AppointmentTimesList)
+        @foreach (var appointmentTimeListForWorkDaySpan in Model.AppointmentTimesList)
         {
-            <div class="d-flex flex-wrap border p-1 m-1">
-                <div class="d-flex flex-wrap">
-                    @foreach (var appointmentTime in appointmentTimeList.Value)
+            <div class="border flex-fill p-1 m-1">
+                <div class="row m-1">
+                    <h5>Адрес :</h5>
+                    @if (appointmentTimeListForWorkDaySpan.Key.Address != null)
+                    {
+                        <div class="ml-1">
+                             @appointmentTimeListForWorkDaySpan.Key.Address?.AddressValue
+                        </div>
+                    }
+                </div>
+                <div class="row m-1">
+                    @foreach (var appointmentTime in appointmentTimeListForWorkDaySpan.Value)
                     {
                         if (appointmentTime.IsAvailable)
                         {
                             <form asp-controller="Consumer" asp-action="Book">
                                 <input type="hidden" name="chosenTime" value="@appointmentTime.Time" />
                                 <input type="hidden" name="serviceId" value="@Model.ServiceId" />
-                                <button type="submit" class="btn btn-success p-2 m-1">
+                                <button type="submit" class="btn btn-success p-2 mr-1 mb-1">
                                     @appointmentTime.Time.ToShortTimeString()
                                 </button>
                             </form>
                         }
                         else
                         {
-                            <button class="btn btn-sm btn-secondary p-2 m-1">
+                            <button class="btn btn-sm btn-secondary p-2 mr-1 mb-1">
                                 @appointmentTime.Time.ToShortTimeString()
                             </button>
                         }
@@ -37,7 +46,7 @@
                 <div class="badge">
                     <form asp-controller="Producer" asp-action="RemoveWorkDayTimeSpan" method="post">
                         <input type="hidden" name="serviceId" value="@Model.ServiceId" />
-                        <input type="hidden" name="workDayTimeSpanId" value="@appointmentTimeList.Key.Id" />
+                        <input type="hidden" name="workDayTimeSpanId" value="@appointmentTimeListForWorkDaySpan.Key.Id" />
                         <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
                         <button type="submit" class="btn btn-danger p-2">
                             Удалить период
