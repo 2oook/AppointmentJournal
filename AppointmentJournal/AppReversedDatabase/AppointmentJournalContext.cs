@@ -42,6 +42,11 @@ namespace AppointmentJournal.AppReversedDatabase
                 entity.Property(e => e.Id).HasColumnName("ID");
 
                 entity.Property(e => e.AddressValue).IsRequired();
+
+                entity.Property(e => e.ProducerId)
+                    .IsRequired()
+                    .HasMaxLength(450)
+                    .HasColumnName("ProducerID");
             });
 
             modelBuilder.Entity<Appointment>(entity =>
@@ -132,7 +137,6 @@ namespace AppointmentJournal.AppReversedDatabase
                 entity.HasOne(d => d.Address)
                     .WithMany(p => p.WorkDaysTimeSpans)
                     .HasForeignKey(d => d.AddressId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_WorkDaysTimeSpans_Addresses");
 
                 entity.HasOne(d => d.Service)

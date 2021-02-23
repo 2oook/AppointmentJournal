@@ -14,6 +14,7 @@ namespace AppointmentJournal.AppReversedDatabase
 
         public long Id { get; set; }
         public string AddressValue { get; set; }
+        public string ProducerId { get; set; }
 
         public virtual ICollection<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
     }

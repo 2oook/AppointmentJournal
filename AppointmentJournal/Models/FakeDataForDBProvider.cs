@@ -21,15 +21,15 @@ namespace AppointmentJournal.Models
             {
                 {
                     0,
-                    new Address(){ AddressValue = "ул.Ленина, д.100" }
+                    new Address(){ AddressValue = "ул.Ленина, д.100", ProducerId = usersDictionary["car_washer"].Id, }
                 },
                 {
                     1,
-                    new Address(){ AddressValue = "ул.Полярная, д.89, кв.45" }
+                    new Address(){ AddressValue = "ул.Полярная, д.89, кв.45", ProducerId = usersDictionary["barber"].Id, }
                 },
                 {
                     2,
-                    new Address(){ AddressValue = "ул.1-Мая, д.29, кв.15" }
+                    new Address(){ AddressValue = "ул.1-Мая, д.29, кв.15", ProducerId = usersDictionary["nail_maker"].Id, }
                 }
             };
 
