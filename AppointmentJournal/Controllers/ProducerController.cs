@@ -35,7 +35,7 @@ namespace AppointmentJournal.Controllers
 
             var producersServices = context.Services.Include(x => x.Category).Where(x => x.ProducerId == userId).ToList();
 
-            var manageAppointmentsViewModel = new ManageAppointmentsViewModel() 
+            var manageAppointmentsViewModel = new ManageServicesViewModel() 
             {
                 ServicesList = producersServices
             };

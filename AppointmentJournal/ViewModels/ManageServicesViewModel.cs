@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.ViewModels
 {
-    public class ManageAppointmentsViewModel
+    public class ManageServicesViewModel
     {
-        public List<Appointment> Appointments { get; set; }
+        public List<Service> ServicesList { get; set; }
     }
 }

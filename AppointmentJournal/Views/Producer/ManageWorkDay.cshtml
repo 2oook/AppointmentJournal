@@ -17,7 +17,13 @@
                     @if (appointmentTimeListForWorkDaySpan.Key.Address != null)
                     {
                         <div class="ml-1">
-                             @appointmentTimeListForWorkDaySpan.Key.Address?.AddressValue
+                            @appointmentTimeListForWorkDaySpan.Key.Address?.AddressValue
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="ml-1">
+                            Нет
                         </div>
                     }
                 </div>
