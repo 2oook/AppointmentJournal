@@ -154,7 +154,12 @@ namespace AppointmentJournal.Controllers
                 .ThenInclude(x => x.Category)
                 .Include(x => x.WorkDayTimeSpan)
                 .ThenInclude(x => x.Address)
-                .Where(x => x.ConsumerId == userId).ToList();
+                .Where(x => x.ConsumerId == userId).AsEnumerable().Select(async x =>
+                {
+                    x.Service.Producer = await _userManager.FindByIdAsync(x.Service.ProducerId);
+                    return x;
+                })
+                .Select(x => x.Result).ToList();
 
             var model = new ManageAppointmentsViewModel()
             {

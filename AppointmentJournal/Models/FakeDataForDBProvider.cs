@@ -55,6 +55,7 @@ namespace AppointmentJournal.Models
                     0,
                     new Service()
                     {
+                        Producer = usersDictionary["car_washer"],
                         ProducerId = usersDictionary["car_washer"].Id,
                         Duration = 30,
                         Name = "Мойка снаружи",
@@ -66,6 +67,7 @@ namespace AppointmentJournal.Models
                     1,
                     new Service()
                     {
+                        Producer =usersDictionary["car_washer"],
                         ProducerId = usersDictionary["car_washer"].Id,
                         Duration = 90,
                         Name = "Мойка комплекс",
@@ -77,6 +79,7 @@ namespace AppointmentJournal.Models
                     2,
                     new Service()
                     {
+                        Producer =usersDictionary["barber"],
                         ProducerId = usersDictionary["barber"].Id,
                         Duration = 30,
                         Name = "Модельная стрижка",
@@ -88,6 +91,7 @@ namespace AppointmentJournal.Models
                     3,
                     new Service()
                     {
+                        Producer =usersDictionary["nail_maker"],
                         ProducerId = usersDictionary["nail_maker"].Id,
                         Duration = 60,
                         Name = "Наращивание ногтей",

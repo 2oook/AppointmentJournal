@@ -10,6 +10,11 @@
         </h4>
     </div>
     <div class="bg-faded p-1">
+        <div>
+            <h6 class="mr-1">Услугу предоставляет : @Model.Producer?.UserName</h6>
+        </div>
+    </div>
+    <div class="bg-faded p-1">
         Длительность : @Model.Duration мин.
         <form id="@Model.Id" asp-action="ChooseDay" asp-controller="Consumer" method="get">
             <input type="hidden" name="serviceId" asp-for="Id" />

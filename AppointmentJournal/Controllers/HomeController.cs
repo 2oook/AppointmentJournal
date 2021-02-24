@@ -1,6 +1,7 @@
 ﻿using AppointmentJournal.AppReversedDatabase;
 using AppointmentJournal.Models;
 using AppointmentJournal.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,12 +14,14 @@ namespace AppointmentJournal.Controllers
     public class HomeController : Controller
     {
         private IServiceProvider _serviceProvider;
+        private readonly UserManager<User> _userManager;
 
         public int PageSize = 3;
 
-        public HomeController(IServiceProvider services)
+        public HomeController(IServiceProvider services, UserManager<User> userManager)
         {
             _serviceProvider = services;
+            _userManager = userManager;
         }
 
         public IActionResult Index() 
@@ -29,6 +32,16 @@ namespace AppointmentJournal.Controllers
         public ViewResult List(string category, int servicePage = 1)
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+            var services = context.Services.Where(p => category == null || p.Category.Name == category)
+                    .OrderBy(p => p.CategoryId)
+                    .Skip((servicePage - 1) * PageSize)
+                    .Take(PageSize).AsEnumerable().Select(async x => 
+                    {
+                        x.Producer = await _userManager.FindByIdAsync(x.ProducerId);
+                        return x;
+                    })
+                    .Select(x => x.Result).ToList();
 
             var pagingInfo = new PagingInfo()
             {
@@ -41,10 +54,7 @@ namespace AppointmentJournal.Controllers
             {
                 CurrentCategory = category,
                 PagingInfo = pagingInfo,
-                Services = context.Services.Where(p => category == null || p.Category.Name == category)
-                    .OrderBy(p => p.CategoryId)
-                    .Skip((servicePage - 1) * PageSize)
-                    .Take(PageSize)
+                Services = services
             };
 
             return View(servicesListViewModel);

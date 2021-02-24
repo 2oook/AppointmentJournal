@@ -40,7 +40,20 @@
                 @appointment.Time.ToShortDateString() @appointment.Time.ToShortTimeString()
             </div>
         </div>
+        <div class="row m-1">
+            <h5>Услугу предоставляет :</h5>
 
+            <div class="ml-1">
+                @appointment.Service.Producer?.UserName
+            </div>
+        </div>
+        <div class="row m-1">
+            <h5>Email :</h5>
+
+            <div class="ml-1">
+                @appointment.Service.Producer?.Email
+            </div>
+        </div>
         <div class="badge">
             <form asp-controller="Consumer" asp-action="RemoveAppointment" method="post">
                 <input type="hidden" name="appointmentId" value="@appointment.Id" />
