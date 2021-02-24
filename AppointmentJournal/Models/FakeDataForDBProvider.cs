@@ -318,6 +318,7 @@ namespace AppointmentJournal.Models
         // Коллекция сервисов для БД
         public IQueryable<Service> Services { get; private set; }
 
+        // Коллекция рабочих дней
         public IQueryable<WorkDay> WorkDays { get; private set; }
 
         // Метод для заполнения БД тестовыми данными

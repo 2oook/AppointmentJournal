@@ -13,6 +13,9 @@ using System.Collections.Generic;
 
 namespace AppointmentJournal.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов связанных с действиями потребителя
+    /// </summary>
     [Authorize(Roles = Constants.ConsumersRole + "," + Constants.ProducersRole)]
     public class ConsumerController : Controller
     {
@@ -25,7 +28,11 @@ namespace AppointmentJournal.Controllers
             _userManager = userManager;
         }
 
-        // Метод для выбора дня для записи  
+        /// <summary>
+        /// Метод для выбора дня для записи  
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <returns></returns>
         public ViewResult ChooseDay(long serviceId)
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
@@ -47,7 +54,12 @@ namespace AppointmentJournal.Controllers
             return View(bookViewModel);
         }
 
-        // Метод для выбора времени записи
+        /// <summary>
+        ///  Метод для выбора времени записи
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <param name="chosenDate">Выбранная дата</param>
+        /// <returns></returns>
         public ViewResult ChooseTime(long serviceId, DateTime chosenDate)
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
@@ -72,8 +84,13 @@ namespace AppointmentJournal.Controllers
             return View(chooseTimeViewModel);
         }
 
-        // Метод для бронирования времени 
-        public ViewResult Book(long serviceId, DateTime chosenTime, string returnUrl = "/") 
+        /// <summary>
+        /// Метод для бронирования
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <param name="chosenTime">Выбранное время</param>
+        /// <returns></returns>
+        public ViewResult Book(long serviceId, DateTime chosenTime) 
         {
             try
             {
@@ -119,8 +136,14 @@ namespace AppointmentJournal.Controllers
             }           
         }
 
+        /// <summary>
+        ///  Метод для удаления записи бронирования
+        /// </summary>
+        /// <param name="appointmentId">ID записи бронирования</param>
+        /// <param name="returnUrl">Url для возврата</param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult RemoveAppointment(long appointmentId, string returnUrl) 
+        public IActionResult RemoveAppointment(long appointmentId, string returnUrl = "/") 
         {
             try
             {
@@ -143,6 +166,10 @@ namespace AppointmentJournal.Controllers
             return Redirect(returnUrl);
         }
 
+        /// <summary>
+        /// Метод для получения списка бронирований для данного пользователя
+        /// </summary>
+        /// <returns></returns>
         public ViewResult ManageAppointments() 
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();

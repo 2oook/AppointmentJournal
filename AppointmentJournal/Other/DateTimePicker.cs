@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Other
 {
+    /// <summary>
+    /// Класс для помощи в создании данных для выбора дат и времени
+    /// </summary>
     public class DateTimePicker
     {
         // Метод для получения календаря из четырёх недель с информацией о доступности записи
@@ -100,10 +103,19 @@ namespace AppointmentJournal.Other
         }
     }
 
+    /// <summary>
+    /// Класс для представления времени бронирования
+    /// </summary>
     public class AppointmentTime 
     {
+        /// <summary>
+        /// Время
+        /// </summary>
         public DateTime Time { get; set; }
 
+        /// <summary>
+        /// Флаг показывающий доступность бронирования
+        /// </summary>
         public bool IsAvailable { get; set; }
     }
 }

@@ -11,6 +11,9 @@ using System.Linq;
 
 namespace AppointmentJournal.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов связанных с управлением аккаунтом
+    /// </summary>
     [Authorize]
     public class AccountController : Controller
     {

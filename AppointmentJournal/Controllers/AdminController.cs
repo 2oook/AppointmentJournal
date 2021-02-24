@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов связанных с администрированием приложения
+    /// </summary>
     [Authorize(Roles = "Admins")]
     public class AdminController : Controller
     {      
@@ -16,6 +19,10 @@ namespace AppointmentJournal.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Метод для наполнения БД тестовыми данными
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult SeedDatabaseWithFakeData()
         {          

@@ -15,6 +15,9 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов связанных с действиями производителя
+    /// </summary>
     [Authorize(Roles = Constants.ProducersRole)]
     public class ProducerController : Controller
     {
@@ -27,12 +30,15 @@ namespace AppointmentJournal.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Метод для получения списка услуг
+        /// </summary>
+        /// <returns></returns>
         public ViewResult ManageServices() 
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var userId = _userManager.GetUserId(User);
-
             var producersServices = context.Services.Include(x => x.Category).Where(x => x.ProducerId == userId).ToList();
 
             var manageAppointmentsViewModel = new ManageServicesViewModel() 
@@ -43,6 +49,10 @@ namespace AppointmentJournal.Controllers
             return View(manageAppointmentsViewModel);
         }
 
+        /// <summary>
+        /// Метод для получения списка адресов
+        /// </summary>
+        /// <returns></returns>
         public ViewResult ManageAddresses() 
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
@@ -59,8 +69,14 @@ namespace AppointmentJournal.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Метод для редактирования адреса GET
+        /// </summary>
+        /// <param name="addressId">ID адреса</param>
+        /// <param name="returnUrl">Url возврата</param>
+        /// <returns></returns>
         [HttpGet]
-        public ViewResult EditAddress(long addressId, string returnUrl)
+        public ViewResult EditAddress(long addressId, string returnUrl = "/")
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
@@ -76,6 +92,11 @@ namespace AppointmentJournal.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Метод для редактирования адреса POST
+        /// </summary>
+        /// <param name="addressViewModel">Модель представления адресов</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult EditAddress(AddressViewModel addressViewModel)
         {
@@ -98,6 +119,11 @@ namespace AppointmentJournal.Controllers
             return View(addressViewModel);
         }
 
+        /// <summary>
+        /// Метод для удаления адреса
+        /// </summary>
+        /// <param name="addressId">ID адреса</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult RemoveAddress(long addressId)
         {
@@ -125,8 +151,13 @@ namespace AppointmentJournal.Controllers
             return RedirectToAction(nameof(ManageAddresses));
         }
 
+        /// <summary>
+        /// Метод для добавления адреса GET
+        /// </summary>
+        /// <param name="returnUrl">URL возврата</param>
+        /// <returns></returns>
         [HttpGet]
-        public ViewResult AddAddress(string returnUrl)
+        public ViewResult AddAddress(string returnUrl = "/")
         {
             var model = new AddressViewModel() 
             {
@@ -136,6 +167,11 @@ namespace AppointmentJournal.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Метод для добавления адреса POST
+        /// </summary>
+        /// <param name="addAddressViewModel">Модель представления добавления адреса</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddAddress(AddressViewModel addAddressViewModel)
         {
@@ -157,6 +193,11 @@ namespace AppointmentJournal.Controllers
             return View(addAddressViewModel);
         }
 
+        /// <summary>
+        /// Метод для добавления услуги POST
+        /// </summary>
+        /// <param name="addServiceViewModel">Модель представления добавления услуги</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddService(ServiceViewModel addServiceViewModel)
         {
@@ -182,12 +223,21 @@ namespace AppointmentJournal.Controllers
             return View(addServiceViewModel);
         }
 
+        /// <summary>
+        /// Метод для добавления услуги GET
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ViewResult AddService()
         {
             return View();
         }
 
+        /// <summary>
+        /// Метод для редактирования услуги GET
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <returns></returns>
         [HttpGet]
         public ViewResult EditService(long serviceId)
         {
@@ -204,6 +254,12 @@ namespace AppointmentJournal.Controllers
             return View(serviceViewModel);
         }
 
+        /// <summary>
+        /// Метод для редактирования услуги POST
+        /// </summary>
+        /// <param name="serviceViewModel">Модель представления редактирования услуги</param>
+        /// <param name="serviceId">ID услуги</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult EditService(ServiceViewModel serviceViewModel, long serviceId)
         {
@@ -268,6 +324,11 @@ namespace AppointmentJournal.Controllers
             }
         }
 
+        /// <summary>
+        /// Метод для управления услугой GET
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <returns></returns>
         [HttpGet]
         public ViewResult ManageService(long serviceId)
         {
@@ -290,6 +351,12 @@ namespace AppointmentJournal.Controllers
             return View(bookViewModel);
         }
 
+        /// <summary>
+        /// Метод для управления рабочим днём
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <param name="chosenDateInTicks">Дата представленная в виде целого числа</param>
+        /// <returns></returns>
         [HttpGet]
         public ViewResult ManageWorkDay(long serviceId, long chosenDateInTicks)
         {
@@ -331,8 +398,14 @@ namespace AppointmentJournal.Controllers
             return View(chooseTimeViewModel);
         }
 
+        /// <summary>
+        /// Метод для переключения доступности рабочего дня
+        /// </summary>
+        /// <param name="workDayId">ID рабочего дня</param>
+        /// <param name="returnUrl">URL возврата</param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult ToggleWorkDayAvailability(long workDayId, string returnUrl)
+        public IActionResult ToggleWorkDayAvailability(long workDayId, string returnUrl = "/")
         {
             try
             {
@@ -360,8 +433,15 @@ namespace AppointmentJournal.Controllers
             return Redirect(returnUrl);
         }
 
+        /// <summary>
+        /// Метод для добавления периода рабочего времени GET
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <param name="chosenDateInTicks">Дата представленная в виде целого числа</param>
+        /// <param name="returnUrl">URL возврата</param>
+        /// <returns></returns>
         [HttpGet]
-        public IActionResult AddWorkDaySpan(long serviceId, long chosenDateInTicks, string returnUrl)
+        public IActionResult AddWorkDaySpan(long serviceId, long chosenDateInTicks, string returnUrl = "/")
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
             var userId = _userManager.GetUserId(User);
@@ -380,6 +460,11 @@ namespace AppointmentJournal.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Метод для добавления периода рабочего времени POST
+        /// </summary>
+        /// <param name="model">Модель представления добавления периода рабочего времени</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult AddWorkDaySpan(AddWorkDaySpanViewModel model)
         {
@@ -454,8 +539,15 @@ namespace AppointmentJournal.Controllers
             return Redirect(model.ReturnUrl);
         }
 
+        /// <summary>
+        /// Метод для удаления периода рабочего времени
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <param name="workDayTimeSpanId">ID периода рабочего времени</param>
+        /// <param name="returnUrl">URL возврата</param>
+        /// <returns></returns>
         [HttpPost]
-        public IActionResult RemoveWorkDayTimeSpan(long serviceId, long workDayTimeSpanId, string returnUrl) 
+        public IActionResult RemoveWorkDayTimeSpan(long serviceId, long workDayTimeSpanId, string returnUrl = "/") 
         {
             try
             {
@@ -479,6 +571,11 @@ namespace AppointmentJournal.Controllers
             return Redirect(returnUrl);
         }
 
+        /// <summary>
+        /// Метод для удаления услуги
+        /// </summary>
+        /// <param name="serviceId">ID услуги</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult RemoveService(long serviceId) 
         {

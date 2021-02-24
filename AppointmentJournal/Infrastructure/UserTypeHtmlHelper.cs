@@ -8,9 +8,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AppointmentJournal.Infrastructure
 {
-    // HtmlHelper для вывода списка для перечисления UserType
+    /// <summary>
+    /// HtmlHelper для вывода списка для перечисления UserType
+    /// </summary>
     public static class UserTypeHtmlHelper
     {
+        /// <summary>
+        /// Метод реализующий вывод списка для перечисления UserType
+        /// </summary>
+        /// <param name="html">Объект реализующий IHtmlHelper</param>
+        /// <returns></returns>
         public static List<SelectListItem> CreateUserTypeList(this IHtmlHelper html)
         {
             var selectedItemsList = new List<SelectListItem>();
@@ -22,6 +29,4 @@ namespace AppointmentJournal.Infrastructure
             return selectedItemsList;
         }
     }
-
-
 }

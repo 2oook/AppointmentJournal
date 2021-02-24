@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.ViewModels
 {
+    /// <summary>
+    /// Модель представления профиля пользователя
+    /// </summary>
     public class UserProfileViewModel
     {
         [Required]

@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace AppointmentJournal.Controllers
 {
+    /// <summary>
+    /// Контроллер для обработки запросов связанных с домашней страницей
+    /// </summary>
     public class HomeController : Controller
     {
         private IServiceProvider _serviceProvider;
