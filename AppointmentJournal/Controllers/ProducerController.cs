@@ -332,23 +332,31 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public ViewResult ManageService(long serviceId)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
-
-            var service = context.Services.SingleOrDefault(s => s.Id == serviceId);
-            var serviceProducerWorkDays = context.WorkDays
-                .Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans
-                .Select(x => x.Service).Contains(service)).ToList();
-
-            var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
-
-            var bookViewModel = new BookAppointmentViewModel()
+            try
             {
-                Dates = dates,
-                ServiceId = serviceId,
-                ServiceName = service.Name
-            };
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
-            return View(bookViewModel);
+                var service = context.Services.SingleOrDefault(s => s.Id == serviceId);
+                var serviceProducerWorkDays = context.WorkDays
+                    .Where(wd => wd.ProducerId == service.ProducerId && wd.WorkDaysTimeSpans
+                    .Select(x => x.Service).Contains(service)).ToList();
+
+                var dates = DateTimePicker.CreateFourWeeksCalendar(serviceProducerWorkDays);
+
+                var bookViewModel = new BookAppointmentViewModel()
+                {
+                    Dates = dates,
+                    ServiceId = serviceId,
+                    ServiceName = service.Name
+                };
+
+                return View(bookViewModel);
+            }
+            catch
+            {
+                // TODO конкретизировать ошибку
+                return View("Error", "Ошибка");
+            } 
         }
 
         /// <summary>
