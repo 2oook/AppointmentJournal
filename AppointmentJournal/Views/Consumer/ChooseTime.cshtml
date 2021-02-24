@@ -13,8 +13,6 @@
     <div class="border flex-fill p-1 m-1">
         <div class="row m-1">
             <h5>Адрес :</h5>
-            @if (appointmentTimeListForWorkDaySpan.Key.Address != null)
-            {
         <div class="ml-1">
             @if (appointmentTimeListForWorkDaySpan.Key.Address != null)
             {
@@ -22,10 +20,11 @@
             }
             else
             {
-                <div>Не назначен</div>
+            <div class="ml-1">
+                Не назначен
+            </div>
             }
         </div>
-            }
         </div>
         <div class="row m-1">
             @foreach (var appointmentTime in appointmentTimeListForWorkDaySpan.Value)

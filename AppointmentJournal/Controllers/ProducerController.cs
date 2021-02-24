@@ -27,7 +27,7 @@ namespace AppointmentJournal.Controllers
             _userManager = userManager;
         }
 
-        public ViewResult ManageAppointments() 
+        public ViewResult ManageServices() 
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
@@ -176,7 +176,7 @@ namespace AppointmentJournal.Controllers
 
                 context.SaveChanges();
 
-                return RedirectToAction(nameof(ManageAppointments));
+                return RedirectToAction(nameof(ManageServices));
             }
 
             return View(addServiceViewModel);
@@ -241,7 +241,7 @@ namespace AppointmentJournal.Controllers
                 
                 context.SaveChanges();
 
-                return RedirectToAction(nameof(ManageAppointments));
+                return RedirectToAction(nameof(ManageServices));
             }
 
             return View(serviceViewModel);
@@ -498,7 +498,7 @@ namespace AppointmentJournal.Controllers
                 return View("Error", "Невозможно удалить услугу");
             }
 
-            return RedirectToAction(nameof(ManageAppointments));
+            return RedirectToAction(nameof(ManageServices));
         }
     }
 }

@@ -10,38 +10,47 @@
     {
         @foreach (var appointment in Model.Appointments)
         {
-            <div class="border flex-fill p-1 m-1">
-                <div class="row m-1">
-                    <h5>Адрес :</h5>
-                    @if (appointment.WorkDayTimeSpan.Address != null)
-                    {
-                        <div class="ml-1">
-                            @appointment.WorkDayTimeSpan.Address?.AddressValue
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="ml-1">
-                            Нет
-                        </div>
-                    }
-                </div>
-                <div class="row m-1">
-                    <button class="btn btn-sm btn-secondary p-2 mr-1 mb-1">
-                        @appointment.Time.ToShortTimeString()
-                    </button>
-                </div>
+    <div class="border flex-fill p-1 m-1">
+        <div class="row m-1">
+            <h5>Услуга :</h5>
 
-                <div class="badge">
-                    <form asp-controller="Producer" asp-action="RemoveAppointment" method="post">
-                        <input type="hidden" name="appointmentId" value="@appointment.Id" />
-                        <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
-                        <button type="submit" class="btn btn-danger p-2">
-                            Удалить
-                        </button>
-                    </form>
-                </div>
+            <div class="ml-1">
+                @appointment.Service.Name
             </div>
+        </div>
+        <div class="row m-1">
+            <h5>Адрес :</h5>
+            @if (appointment.WorkDayTimeSpan.Address != null)
+            {
+                <div class="ml-1">
+                    @appointment.WorkDayTimeSpan.Address?.AddressValue
+                </div>
+            }
+            else
+            {
+                <div class="ml-1">
+                    Не назначен
+                </div>
+            }
+        </div>
+        <div class="row m-1">
+            <h5>Дата :</h5>
+
+            <div class="ml-1">
+                @appointment.Time.ToShortDateString() @appointment.Time.ToShortTimeString()
+            </div>
+        </div>
+
+        <div class="badge">
+            <form asp-controller="Consumer" asp-action="RemoveAppointment" method="post">
+                <input type="hidden" name="appointmentId" value="@appointment.Id" />
+                <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                <button type="submit" class="btn btn-danger p-2">
+                    Удалить
+                </button>
+            </form>
+        </div>
+    </div>
         }
     }
 </div>

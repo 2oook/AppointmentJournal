@@ -99,7 +99,8 @@ namespace AppointmentJournal.Controllers
                 var appointment = new Appointment()
                 {
                     Time = chosenTime,
-                    WorkDayTimeSpan = neededTimeSpan
+                    WorkDayTimeSpan = neededTimeSpan,
+                    ConsumerId = userId
                 };
 
                 service.Appointments.Add(appointment);
@@ -118,17 +119,46 @@ namespace AppointmentJournal.Controllers
             }           
         }
 
+        [HttpPost]
+        public IActionResult RemoveAppointment(long appointmentId, string returnUrl) 
+        {
+            try
+            {
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+                var userId = _userManager.GetUserId(User);
+
+                var appointment = context.Appointments.SingleOrDefault(x => x.Id == appointmentId & x.ConsumerId == userId);
+
+                context.Appointments.Remove(appointment);
+
+                context.SaveChanges();
+            }
+            catch
+            {
+                // TODO конкретизировать ошибку
+                return View("Error", "Невозможно удалить запись");
+            }
+
+            return Redirect(returnUrl);
+        }
+
         public ViewResult ManageAppointments() 
         {
             var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var userId = _userManager.GetUserId(User);
 
-            var appointments = context.Appointments.Where(x => x.Service.ProducerId == userId);
+            var appointments = context.Appointments
+                .Include(x => x.Service)
+                .ThenInclude(x => x.Category)
+                .Include(x => x.WorkDayTimeSpan)
+                .ThenInclude(x => x.Address)
+                .Where(x => x.ConsumerId == userId).ToList();
 
             var model = new ManageAppointmentsViewModel()
             {
-                Appointments = new List<Appointment>()
+                Appointments = appointments
             };
 
             return View(model);
