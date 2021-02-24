@@ -11,11 +11,11 @@ namespace AppointmentJournal.Components
     // Компонент представления навигационного меню категорий
     public class NavigationMenuViewComponent : ViewComponent
     {
-        private AppointmentJournalDbContext context;
+        private AppointmentJournalContext context;
 
         public NavigationMenuViewComponent(IServiceProvider _serviceProvider)
         {
-            context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
         }
 
         public IViewComponentResult Invoke()

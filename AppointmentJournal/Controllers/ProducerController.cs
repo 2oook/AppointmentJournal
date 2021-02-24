@@ -29,7 +29,7 @@ namespace AppointmentJournal.Controllers
 
         public ViewResult ManageAppointments() 
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var userId = _userManager.GetUserId(User);
 
@@ -45,7 +45,7 @@ namespace AppointmentJournal.Controllers
 
         public ViewResult ManageAddresses() 
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var userId = _userManager.GetUserId(User);
 
@@ -62,7 +62,7 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public ViewResult EditAddress(long addressId, string returnUrl)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var userId = _userManager.GetUserId(User);
             var address = context.Addresses.SingleOrDefault(x => x.ProducerId == userId & x.Id == addressId);
@@ -83,7 +83,7 @@ namespace AppointmentJournal.Controllers
             {
                 // TODO проверка полей сервиса 
 
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
                 var address = context.Addresses.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(x => x.ProducerId == userId & x.Id == addressViewModel.Address.Id);
@@ -103,7 +103,7 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
                 var address = context.Addresses.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(x => x.ProducerId == userId & x.Id == addressId);
@@ -143,7 +143,7 @@ namespace AppointmentJournal.Controllers
             {
                 // TODO проверка полей сервиса 
 
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
                 var userId = _userManager.GetUserId(User);
 
                 addAddressViewModel.Address.ProducerId = userId;
@@ -164,7 +164,7 @@ namespace AppointmentJournal.Controllers
             {
                 // TODO проверка полей сервиса 
 
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
 
@@ -191,7 +191,7 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public ViewResult EditService(long serviceId)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var service = context.Services.Include(x => x.Category).SingleOrDefault(s => s.Id == serviceId);
 
@@ -211,7 +211,7 @@ namespace AppointmentJournal.Controllers
             {
                 // TODO проверка полей сервиса 
 
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
 
@@ -271,7 +271,7 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public ViewResult ManageService(long serviceId)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var service = context.Services.SingleOrDefault(s => s.Id == serviceId);
             var serviceProducerWorkDays = context.WorkDays
@@ -293,7 +293,7 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public ViewResult ManageWorkDay(long serviceId, long chosenDateInTicks)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var chosenDate = new DateTime(chosenDateInTicks);
 
@@ -336,7 +336,7 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var workDay = context.WorkDays.SingleOrDefault(x => x.Id == workDayId);
 
@@ -363,7 +363,7 @@ namespace AppointmentJournal.Controllers
         [HttpGet]
         public IActionResult AddWorkDaySpan(long serviceId, long chosenDateInTicks, string returnUrl)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
             var userId = _userManager.GetUserId(User);
             var addresses = context.Addresses.Where(x => x.ProducerId == userId).Select(x => new SelectListItem { Value = x.Id.ToString() , Text = x.AddressValue }).ToList();
 
@@ -394,7 +394,7 @@ namespace AppointmentJournal.Controllers
                 var modelBeginTime = new DateTime(model.ChosenDate.Year, model.ChosenDate.Month, model.ChosenDate.Day, model.BeginHour, 0, 0);
                 var modelEndTime = new DateTime(model.ChosenDate.Year, model.ChosenDate.Month, model.ChosenDate.Day, model.EndHour, 0, 0);
 
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
                 var service = context.Services
@@ -459,7 +459,7 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
                 var service = context.Services.Include(x => x.WorkDaysTimeSpans).SingleOrDefault(s => s.Id == serviceId & s.ProducerId == userId);
@@ -484,7 +484,7 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
                 var service = context.Services.SingleOrDefault(s => s.Id == serviceId & s.ProducerId == userId);

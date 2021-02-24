@@ -28,7 +28,7 @@ namespace AppointmentJournal.Controllers
 
         public ViewResult List(string category, int servicePage = 1)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var pagingInfo = new PagingInfo()
             {

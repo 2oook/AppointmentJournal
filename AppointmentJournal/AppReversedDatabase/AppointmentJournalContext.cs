@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AppointmentJournal.AppReversedDatabase
 {
-    public partial class AppointmentJournalDbContext : DbContext
+    public partial class AppointmentJournalContext : DbContext
     {
-        public AppointmentJournalDbContext()
+        public AppointmentJournalContext()
         {
         }
 
-        public AppointmentJournalDbContext(DbContextOptions<AppointmentJournalDbContext> options)
+        public AppointmentJournalContext(DbContextOptions<AppointmentJournalContext> options)
             : base(options)
         {
         }
@@ -56,6 +56,11 @@ namespace AppointmentJournal.AppReversedDatabase
                 entity.HasIndex(e => e.WorkDayTimeSpanId, "IX_Appointments_WorkDayID");
 
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ConsumerId)
+                    .IsRequired()
+                    .HasMaxLength(450)
+                    .HasColumnName("ConsumerID");
 
                 entity.Property(e => e.ServiceId).HasColumnName("ServiceID");
 
@@ -120,6 +125,10 @@ namespace AppointmentJournal.AppReversedDatabase
 
             modelBuilder.Entity<WorkDaysTimeSpan>(entity =>
             {
+                entity.HasIndex(e => e.AddressId, "IX_WorkDaysTimeSpans_AddressID");
+
+                entity.HasIndex(e => e.ServiceId, "IX_WorkDaysTimeSpans_ServiceID");
+
                 entity.HasIndex(e => e.WorkDayId, "IX_WorkDaysTimeSpans_WorkDayID");
 
                 entity.Property(e => e.Id).HasColumnName("ID");

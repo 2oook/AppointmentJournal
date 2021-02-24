@@ -9,6 +9,7 @@ using AppointmentJournal.AppReversedDatabase;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace AppointmentJournal.Controllers
 {
@@ -27,7 +28,7 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора дня для записи  
         public ViewResult ChooseDay(long serviceId)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var service = context.Services.SingleOrDefault(s => s.Id == serviceId);
             var serviceProducerWorkDays = context.WorkDays
@@ -49,7 +50,7 @@ namespace AppointmentJournal.Controllers
         // Метод для выбора времени записи
         public ViewResult ChooseTime(long serviceId, DateTime chosenDate)
         {
-            var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
             var service = context.Services
                 .Include(x => x.WorkDaysTimeSpans)
@@ -76,7 +77,7 @@ namespace AppointmentJournal.Controllers
         {
             try
             {
-                var context = _serviceProvider.GetRequiredService<AppointmentJournalDbContext>();
+                var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
 
                 var userId = _userManager.GetUserId(User);
 
@@ -115,6 +116,22 @@ namespace AppointmentJournal.Controllers
 
                 return View();
             }           
+        }
+
+        public ViewResult ManageAppointments() 
+        {
+            var context = _serviceProvider.GetRequiredService<AppointmentJournalContext>();
+
+            var userId = _userManager.GetUserId(User);
+
+            var appointments = context.Appointments.Where(x => x.Service.ProducerId == userId);
+
+            var model = new ManageAppointmentsViewModel()
+            {
+                Appointments = new List<Appointment>()
+            };
+
+            return View(model);
         }
     }
 }

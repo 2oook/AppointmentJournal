@@ -1,1 +1,1 @@
-﻿dotnet ef dbcontext scaffold "Server=(localdb)\mssqllocaldb;Database=AppointmentJournal;Trusted_Connection=True;MultipleActiveResultSets=true" Microsoft.EntityFrameworkCore.SqlServer --output-dir AppReversedDatabase
+﻿dotnet ef dbcontext scaffold "Server=(localdb)\mssqllocaldb;Database=AppointmentJournal;Trusted_Connection=True;MultipleActiveResultSets=true" Microsoft.EntityFrameworkCore.SqlServer --output-dir AppReversedDatabase --force

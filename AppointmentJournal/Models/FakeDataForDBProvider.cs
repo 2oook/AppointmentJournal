@@ -193,7 +193,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 12, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[0]
+                        WorkDayTimeSpan = workDaysTimeSpans[0],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -201,7 +202,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 12, 30, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[0]
+                        WorkDayTimeSpan = workDaysTimeSpans[0],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -209,7 +211,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(8).Month, DateTime.Now.AddDays(8).Day, 17, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[1]
+                        WorkDayTimeSpan = workDaysTimeSpans[1],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -217,7 +220,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(10).Month, DateTime.Now.AddDays(10).Day, 8, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[2]
+                        WorkDayTimeSpan = workDaysTimeSpans[2],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -225,7 +229,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 10, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[3]
+                        WorkDayTimeSpan = workDaysTimeSpans[3],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -233,7 +238,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 11, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[3]
+                        WorkDayTimeSpan = workDaysTimeSpans[3],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 },
                 {
@@ -241,7 +247,8 @@ namespace AppointmentJournal.Models
                     new Appointment()
                     {
                         Time = new DateTime(DateTime.Now.Year, DateTime.Now.AddDays(11).Month, DateTime.Now.AddDays(11).Day, 12, 00, 00),
-                        WorkDayTimeSpan = workDaysTimeSpans[3]
+                        WorkDayTimeSpan = workDaysTimeSpans[3],
+                        ConsumerId = usersDictionary["car_washer"].Id
                     }
                 }
             };
@@ -312,7 +319,7 @@ namespace AppointmentJournal.Models
         // Метод для заполнения БД тестовыми данными
         public void PopulateDBWithFakeData(IServiceProvider services)
         {
-            AppointmentJournalDbContext context = services.GetRequiredService<AppointmentJournalDbContext>();
+            AppointmentJournalContext context = services.GetRequiredService<AppointmentJournalContext>();
 
             if (!context.Services.Any())
             {
