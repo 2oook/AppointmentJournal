@@ -19,7 +19,6 @@ namespace AppointmentJournal.Models
             Database.EnsureCreated();
         }
 
-        // Метод для создания аккаунта администратора
         public static async Task CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
         {
             UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
@@ -52,7 +51,6 @@ namespace AppointmentJournal.Models
             }
         }
 
-        // Метод для создания ролей
         public static async Task CreateRoles(IServiceProvider serviceProvider) 
         {
             var roles = new List<string>()
