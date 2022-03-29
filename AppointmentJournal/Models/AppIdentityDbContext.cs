@@ -14,20 +14,29 @@ namespace AppointmentJournal.Models
     /// </summary>
     public class AppIdentityDbContext : IdentityDbContext<User>
     {
-        public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options) : base(options) 
+        public AppIdentityDbContext(
+            DbContextOptions<AppIdentityDbContext> options,
+            IServiceProvider serviceProvider, 
+            IConfiguration configuration) : base(options) 
         {
             Database.EnsureCreated();
+            _serviceProvider = serviceProvider;
+            _configuration = configuration;
         }
 
-        public static async Task CreateAdminAccount(IServiceProvider serviceProvider, IConfiguration configuration)
-        {
-            UserManager<User> userManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+        private IServiceProvider _serviceProvider { get; set; }
 
-            string username = configuration["AdminUser:Name"];
-            string email = configuration["AdminUser:Email"];
-            string password = configuration["AdminUser:Password"];
-            string role = configuration["AdminUser:Role"];
+        private IConfiguration _configuration { get; set; }
+
+        public async Task CreateAdminAccount()
+        {
+            UserManager<User> userManager = _serviceProvider.GetRequiredService<UserManager<User>>();
+            RoleManager<IdentityRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string username = _configuration["AdminUser:Name"];
+            string email = _configuration["AdminUser:Email"];
+            string password = _configuration["AdminUser:Password"];
+            string role = _configuration["AdminUser:Role"];
 
             if (await userManager.FindByNameAsync(username) == null)
             {
@@ -51,7 +60,7 @@ namespace AppointmentJournal.Models
             }
         }
 
-        public static async Task CreateRoles(IServiceProvider serviceProvider) 
+        public async Task CreateRoles() 
         {
             var roles = new List<string>()
             {
@@ -59,7 +68,7 @@ namespace AppointmentJournal.Models
                 Constants.ProducersRole
             };
 
-            RoleManager<IdentityRole> roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            RoleManager<IdentityRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             foreach (var role in roles)
             {

@@ -19,3 +19,13 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password10
+
+  appointment-journal-service-instance:
+    image: number667/appointment-journal
+    ports:
+      - "8080:80"
+
+    restart: always
+
+    depends_on:
+      - mssql-server-instance

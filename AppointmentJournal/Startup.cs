@@ -39,7 +39,7 @@ public class Startup
             .AddRazorRuntimeCompilation();
     }
 
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AppIdentityDbContext identityDbContext)
     {
         if (env.IsDevelopment())
         {
@@ -52,8 +52,8 @@ public class Startup
         app.UseAuthentication();
         app.UseAuthorization();
 
-        AppIdentityDbContext.CreateAdminAccount(app.ApplicationServices, Configuration).Wait();
-        AppIdentityDbContext.CreateRoles(app.ApplicationServices).Wait();
+        identityDbContext.CreateAdminAccount().Wait();
+        identityDbContext.CreateRoles().Wait();
 
         app.UseEndpoints(endpoints =>
         {

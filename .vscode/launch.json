@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/AppointmentJournal/bin/Debug/net5.0/AppointmentJournal.dll",
+            "program": "${workspaceFolder}/AppointmentJournal/bin/Debug/net6.0/AppointmentJournal.dll",
             "args": [],
             "cwd": "${workspaceFolder}/AppointmentJournal",
             "stopAtEntry": false,
