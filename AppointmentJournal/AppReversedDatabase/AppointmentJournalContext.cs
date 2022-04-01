@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -11,10 +9,11 @@ namespace AppointmentJournal.AppReversedDatabase
         public AppointmentJournalContext()
         {
         }
-
+        
         public AppointmentJournalContext(DbContextOptions<AppointmentJournalContext> options)
             : base(options)
         {
+            Database.EnsureCreated();
         }
 
         public virtual DbSet<Address> Addresses { get; set; }

@@ -1,0 +1,40 @@
+version: '3.8'
+
+volumes:
+  mssql_data:
+
+services:
+  mssql-server-instance:
+    image: mcr.microsoft.com/mssql/server
+    ports:
+     - "1433:1433"
+
+    restart: always
+
+    user: root
+
+    volumes:
+      - mssql_data:/var/opt/mssql/data
+
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password10
+      - "TZ=Europe/Moscow"
+
+  service-instance:
+    build: .
+    ports:
+      - "8080:5000"
+
+    restart: always
+
+    environment:
+      - "TZ=Europe/Moscow"
+
+    links:
+      - "mssql-server-instance:db"
+
+    depends_on:
+      - mssql-server-instance
+
+    entrypoint: ["/wait-for-it.sh", "db:1433", "-t", "120", "--", "dotnet", "AppointmentJournal.dll"]
