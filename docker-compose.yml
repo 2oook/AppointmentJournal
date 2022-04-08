@@ -24,9 +24,11 @@ services:
   service-instance:
     build: .
     ports:
-      - "8080:5000"
+      - "8080:10000"
 
     restart: always
+
+    user: root
 
     environment:
       - "TZ=Europe/Moscow"
@@ -37,4 +39,6 @@ services:
     depends_on:
       - mssql-server-instance
 
-    entrypoint: ["/wait-for-it.sh", "db:1433", "-t", "120", "--", "dotnet", "AppointmentJournal.dll"]
+    #command: bash -c "/start-server.sh"
+
+    entrypoint: ["/wait-for-it.sh", "db:1433", "-t", "120", "--", "/start-server.sh"]
