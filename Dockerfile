@@ -18,9 +18,9 @@ RUN apt update && \
     apt install -y --no-install-recommends nginx && \
     #rm -rf /var/lib/apt/lists/* && \
     #apt clean && \
-    #rm /etc/nginx/nginx.conf
-    ls
+    rm /etc/nginx/nginx.conf
 
+COPY ./DeploymentFiles/nginx-main.conf /etc/nginx/nginx.conf
 COPY ./DeploymentFiles/nginx.conf /etc/nginx/sites-enabled/appointment-journal.conf
 
 # Copy wait-for-it.sh into our image
