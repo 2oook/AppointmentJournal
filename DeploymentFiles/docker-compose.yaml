@@ -9,7 +9,7 @@ services:
     ports:
      - "1433:1433"
 
-    #restart: always
+    restart: always
 
     user: root
 
@@ -22,11 +22,11 @@ services:
       - "TZ=Europe/Moscow"
 
   service-instance:
-    build: .
+    image: 192.168.142.129:50000/number667/appointment-journal-site
     ports:
       - "8080:8080"
 
-    #restart: always
+    restart: always
 
     user: root
 
@@ -38,7 +38,5 @@ services:
 
     depends_on:
       - mssql-server-instance
-
-    #command: bash -c "/start-server.sh"
 
     entrypoint: ["/wait-for-it.sh", "db:1433", "-t", "120", "--", "/start-server.sh"]

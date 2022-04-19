@@ -1,0 +1,10 @@
+DELETING:
+
+curl -i -X GET http://192.168.142.129:50000/v2/number667/appointment-journal-site/manifests/latest -H 'Accept: application/vnd.docker.distribution.manifest.v2+json'
+
+curl -i -X DELETE http://192.168.142.129:50000/v2/number667/appointment-journal-site/manifests/sha256:284a89ee1b1736e59d1d29c1418bf1269523dfbc3664108fc60ceb5f62dfe9ac
+
+docker exec docker-registry /bin/registry garbage-collect /etc/docker/registry/config.yml --delete-untagged
+
+#on registry machine
+rm -r /var/lib/registry/docker/registry/v2/repositories/number667/appointment-journal-site/latest

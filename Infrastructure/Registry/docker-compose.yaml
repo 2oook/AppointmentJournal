@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  docker-registry:
+    image: registry:latest
+    container_name: docker-registry
+    environment:
+      - REGISTRY_STORAGE_DELETE_ENABLED=true
+    volumes:
+      - docker-registry:/var/lib/registry
+    ports:
+      - "50000:5000"
+    restart: unless-stopped
+volumes:
+  docker-registry:

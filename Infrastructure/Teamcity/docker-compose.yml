@@ -1,0 +1,62 @@
+version: '3.9'
+services:
+  teamcity-server-instance:
+    image: jetbrains/teamcity-server
+    ports:
+     - "8111:8111"
+    restart: always
+
+    user: root
+
+    # command: 
+    #  - /bin/bash
+    #  - -c
+    #  - chown -R 1000:1000 /opt/teamcity/logs
+    #  - chown -R 1000:1000 /data/teamcity_server/datadir
+    volumes:
+      - data:/data/teamcity_server/datadir
+      - logs:/opt/teamcity/logs
+
+    networks:
+      - teamcity-network
+
+  teamcity-agent-docker-instance:
+    build: ./docker_agent/
+    restart: always
+
+    user: root
+
+    volumes:
+      - agent-docker-conf:/data/teamcity_agent/conf
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - SERVER_URL=teamcity-server-instance:8111
+    networks:
+      - teamcity-network
+
+  teamcity-agent-instance:
+    image: number667/teamcity-agent-dotnet
+    restart: always
+
+    user: root
+
+    # command: 
+    #  - /bin/bash
+    #  - -c
+    #  - chown -R 1000:1000 /data/teamcity_agent/conf
+
+    volumes:
+      - agent-conf:/data/teamcity_agent/conf
+    environment:
+      - SERVER_URL=teamcity-server-instance:8111
+    networks:
+      - teamcity-network
+
+volumes:
+  data:
+  logs:
+  agent-conf:
+  agent-docker-conf:
+
+networks:
+  teamcity-network:

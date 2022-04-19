@@ -1,0 +1,16 @@
+DEPLOY
+
+mkdir /var/www/AppointmnetJournal/temp/deploy
+tar xvf /var/www/AppointmnetJournal/temp/deploy.tar -C /var/www/AppointmnetJournal/temp/deploy
+
+cd /var/www/AppointmnetJournal/temp/deploy
+
+find /var/www/AppointmnetJournal/temp/deploy -type d -exec chmod 755 {} +
+find /var/www/AppointmnetJournal/temp/deploy -type f -exec chmod 644 {} +
+chmod +x /var/www/AppointmnetJournal/temp/deploy/AppointmnetJournal.dll
+
+rm -rf /var/www/AppointmnetJournal/app/*
+mv /var/www/AppointmnetJournal/temp/deploy/* /var/www/AppointmnetJournal/app
+rm -rf /var/www/AppointmnetJournal/temp
+
+systemctl restart appointment-journal.service
