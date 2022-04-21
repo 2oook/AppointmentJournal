@@ -12,7 +12,7 @@ using System.Linq;
 namespace AppointmentJournal.Controllers
 {
     /// <summary>
-    /// Контроллер для обработки запросов связанных с управлением аккаунтом
+    /// Account managment controller
     /// </summary>
     [Authorize]
     public class AccountController : Controller
@@ -28,9 +28,9 @@ namespace AppointmentJournal.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public ViewResult Register(string returnUrl = "/")
+        public ViewResult Register(string returnUrl = PathConstants.RootPath)
         {
-            return View(new RegisterViewModel() 
+            return View(new RegisterViewModel
             {
                 ReturnUrl = returnUrl
             });
@@ -42,79 +42,82 @@ namespace AppointmentJournal.Controllers
         {
             if (ModelState.IsValid)
             {
-                // открыть транзакцию регистрации
-                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled)) 
+                using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+                
+                var user = new User 
+                { 
+                    UserName = registerModel.Name, 
+                    City = registerModel.City, 
+                    PhoneNumber = registerModel.PhoneNumber, 
+                    Email = registerModel.Email 
+                };
+
+                IdentityResult createUserResult = await _userManager.CreateAsync(user, registerModel.Password);
+
+                if (!createUserResult.Succeeded)
                 {
-                    try
-                    {
-                        User user = new User { UserName = registerModel.Name, City = registerModel.City, PhoneNumber = registerModel.PhoneNumber, Email = registerModel.Email };
-
-                        // добавляем пользователя
-                        IdentityResult createUserResult = await _userManager.CreateAsync(user, registerModel.Password);
-
-                        // если пользователь не был создан
-                        if (!createUserResult.Succeeded)
-                        {
-                            foreach (var error in createUserResult.Errors)
-                            {
-                                ModelState.AddModelError(string.Empty, error.Description);
-                            }
-
-                            return View(registerModel);
-                        }
-
-                        // список результатов установки ролей
-                        List<IdentityResult> setRoleResultList = new List<IdentityResult>();
-
-                        // установить роль пользователю в БД
-                        switch (registerModel.UserType)
-                        {
-                            case UserType.Consumer:
-                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
-                                break;
-                            case UserType.Producer:
-                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
-                                setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ProducersRole));
-                                break;
-                            default:
-                                ModelState.AddModelError(string.Empty, "Тип пользователя не указан");
-                                return View(registerModel);
-                        }
-
-                        if (setRoleResultList.All(x => (x?.Succeeded ?? false)))
-                        {
-                            // установка куки, которое будет храниться до закрытия браузера
-                            await _signInManager.SignInAsync(user, false);
-                            // завершить транзакцию регистрации
-                            scope.Complete();
-
-                            return Redirect(registerModel?.ReturnUrl);
-                        }
-                        else
-                        {
-                            foreach (var setRoleResult in setRoleResultList)
-                            {
-                                foreach (var error in setRoleResult?.Errors)
-                                {
-                                    ModelState.AddModelError(string.Empty, error.Description);
-                                }
-                            }                         
-                        }
-                    }
-                    catch
-                    {
-                        scope.Dispose();
-                        throw;
-                    }
+                    AddErrorsToModelState(createUserResult);
+                    return View(registerModel);
                 }
+
+                if(!Enum.IsDefined<UserType>(registerModel.UserType))
+                {
+                    ModelState.AddModelError(string.Empty, MessageConstants.UserTypeIsNotDefined);
+                    return View(registerModel);
+                }
+
+                IEnumerable<IdentityResult> setRoleResultList = await SetRolesToUser(registerModel.UserType, user);             
+
+                if (!setRoleResultList.All(x => (x?.Succeeded ?? false)))
+                {
+                    foreach (var setRoleResult in setRoleResultList)
+                    {
+                        AddErrorsToModelState(setRoleResult);
+                    }    
+
+                    return View(registerModel);                    
+                }
+
+                await _signInManager.SignInAsync(user, false);             
+                scope.Complete();
+
+                return Redirect(registerModel?.ReturnUrl);   
             }
 
             return View(registerModel);
         }
 
+        private async Task<IEnumerable<IdentityResult>> SetRolesToUser(UserType userType, User user) 
+        {
+            var setRoleResultList = new List<IdentityResult>();
+
+            switch (userType)
+            {
+                case UserType.Consumer:
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
+                    break;
+                case UserType.Producer:
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ProducersRole));
+                    break;
+                default:
+                    throw new Exception($"{nameof(UserType)} = {userType} is not defined");
+            }
+
+            return setRoleResultList;
+        }
+
+        private void AddErrorsToModelState(IdentityResult identityResult)
+        {
+            foreach (var error in identityResult?.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
         [HttpGet]
         [AllowAnonymous]
-        public ViewResult Login(string returnUrl = "/")
+        public ViewResult Login(string returnUrl = PathConstants.RootPath)
         {
             return View(new LoginViewModel
             {
@@ -129,26 +132,31 @@ namespace AppointmentJournal.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _userManager.FindByNameAsync(loginModel.Name);
-                
-                if (user != null)
-                {
-                    await _signInManager.SignOutAsync();
-
-                    var signInResult = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true/*false*/, false);
-
-                    if (signInResult.Succeeded)
-                    {
-                        return Redirect(loginModel?.ReturnUrl);
-                    }
-                }
+                ModelState.AddModelError(string.Empty, MessageConstants.LoginFailed);
+                return View(loginModel);
             }
 
-            ModelState.AddModelError("", "Неверное имя или пароль");
-            return View(loginModel);
+            User user = await _userManager.FindByNameAsync(loginModel.Name);
+            
+            if (user is null)
+            {
+                ModelState.AddModelError(string.Empty, MessageConstants.UserIsNotFound);
+                return View(loginModel);
+            }
+
+            await _signInManager.SignOutAsync();
+            var signInResult = await _signInManager.PasswordSignInAsync(user, loginModel.Password, true, false);
+
+            if (!signInResult.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, MessageConstants.LoginFailed);
+                return View(loginModel);
+            }
+
+            return Redirect(loginModel?.ReturnUrl);
         }
 
-        public async Task<RedirectResult> Logout(string returnUrl = "/")
+        public async Task<RedirectResult> Logout(string returnUrl = PathConstants.RootPath)
         {
             await _signInManager.SignOutAsync();
             return Redirect(returnUrl);
@@ -192,7 +200,7 @@ namespace AppointmentJournal.Controllers
             }
             catch (Exception)
             {
-                // TODO : логировать ошибку
+                // TODO : log an error
                 return View();
             }
         }
