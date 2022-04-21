@@ -1,4 +1,4 @@
-﻿namespace AppointmentJournal.Models;
+﻿namespace AppointmentJournal.AppDatabase;
 
 /// <summary>
 /// String constants

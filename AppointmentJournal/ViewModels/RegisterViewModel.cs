@@ -1,5 +1,4 @@
-﻿using AppointmentJournal.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AppointmentJournal.ViewModels
 {

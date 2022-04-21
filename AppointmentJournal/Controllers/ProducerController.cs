@@ -1,5 +1,4 @@
 ﻿using AppointmentJournal.AppDatabase;
-using AppointmentJournal.Models;
 using AppointmentJournal.Other;
 using AppointmentJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;

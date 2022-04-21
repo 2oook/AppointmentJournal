@@ -1,12 +1,7 @@
-﻿using AppointmentJournal.AppDatabase;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace AppointmentJournal.Models;
+namespace AppointmentJournal.AppDatabase;
 
 /// <summary>
 /// Provider for test DB data filling
@@ -313,7 +308,7 @@ public class FakeDataForDBProvider
     }
 
     // Словарь пользователей
-    private static Dictionary<string, User> usersDictionary;
+    private static Dictionary<string, User> usersDictionary = new Dictionary<string, User>();
 
     // Коллекция сервисов для БД
     public IQueryable<Service> Services { get; private set; }

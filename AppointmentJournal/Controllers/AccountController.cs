@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AppointmentJournal.ViewModels;
-using AppointmentJournal.Models;
+using AppointmentJournal.AppDatabase;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Transactions;

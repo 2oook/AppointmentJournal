@@ -1,6 +1,6 @@
 ﻿using AppointmentJournal.Controllers;
-using AppointmentJournal.Models;
 using AppointmentJournal.ViewModels;
+using AppointmentJournal.AppDatabase;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

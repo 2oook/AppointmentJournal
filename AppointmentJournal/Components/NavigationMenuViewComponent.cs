@@ -1,5 +1,4 @@
 ﻿using AppointmentJournal.AppDatabase;
-using AppointmentJournal.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using System;

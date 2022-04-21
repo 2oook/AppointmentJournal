@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppointmentJournal", "Appoi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppointmentJournal.Tests", "AppointmentJournal.Tests\AppointmentJournal.Tests.csproj", "{569C0F7B-16EF-4760-BCF0-4E95F3DF8AFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppDatabase", "AppDatabase\AppDatabase.csproj", "{798B8FEB-EA01-41EB-9A7D-E4DA0A776434}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{569C0F7B-16EF-4760-BCF0-4E95F3DF8AFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{569C0F7B-16EF-4760-BCF0-4E95F3DF8AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{569C0F7B-16EF-4760-BCF0-4E95F3DF8AFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798B8FEB-EA01-41EB-9A7D-E4DA0A776434}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798B8FEB-EA01-41EB-9A7D-E4DA0A776434}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798B8FEB-EA01-41EB-9A7D-E4DA0A776434}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798B8FEB-EA01-41EB-9A7D-E4DA0A776434}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
