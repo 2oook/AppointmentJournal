@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AppointmentJournal.AppCore;
 
 namespace AppointmentJournal.AppDatabase;
 
@@ -14,9 +15,12 @@ public class AppIdentityDbContext : IdentityDbContext<User>
     public AppIdentityDbContext(
         DbContextOptions<AppIdentityDbContext> options,
         IServiceProvider serviceProvider, 
-        IConfiguration configuration) : base(options) 
+        IConfiguration configuration,
+        IConfig config) : base(options) 
     {
+        Database.SetConnectionString(config.SqlSettings.IdentityConnectionString);
         Database.EnsureCreated();
+        
         _serviceProvider = serviceProvider;
         _configuration = configuration;
     }
@@ -33,15 +37,9 @@ public class AppIdentityDbContext : IdentityDbContext<User>
         string username = _configuration["AdminUser:Name"];
         string email = _configuration["AdminUser:Email"];
         string password = _configuration["AdminUser:Password"];
-        string role = _configuration["AdminUser:Role"];
 
         if (await userManager.FindByNameAsync(username) == null)
         {
-            if (await roleManager.FindByNameAsync(role) == null)
-            {
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
-
             User user = new User
             {
                 UserName = username,
@@ -52,7 +50,7 @@ public class AppIdentityDbContext : IdentityDbContext<User>
 
             if (result.Succeeded)
             {
-                await userManager.AddToRoleAsync(user, role);
+                await userManager.AddToRoleAsync(user, DatabaseConstants.AdminsRole);
             }
         }
     }
@@ -62,7 +60,8 @@ public class AppIdentityDbContext : IdentityDbContext<User>
         var roles = new List<string>()
         {
             DatabaseConstants.ConsumersRole,
-            DatabaseConstants.ProducersRole
+            DatabaseConstants.ProducersRole,
+            DatabaseConstants.AdminsRole
         };
 
         RoleManager<IdentityRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();

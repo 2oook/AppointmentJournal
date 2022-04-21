@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using AppointmentJournal.AppCore;
 
 #nullable disable
 
@@ -10,9 +11,12 @@ namespace AppointmentJournal.AppDatabase
         {
         }
         
-        public AppointmentJournalContext(DbContextOptions<AppointmentJournalContext> options)
+        public AppointmentJournalContext(
+            DbContextOptions<AppointmentJournalContext> options,
+            IConfig config)
             : base(options)
         {
+            Database.SetConnectionString(config.SqlSettings.AppConnectionString);
             Database.EnsureCreated();
         }
 
@@ -22,14 +26,6 @@ namespace AppointmentJournal.AppDatabase
         public virtual DbSet<ServicesCategory> ServicesCategories { get; set; }
         public virtual DbSet<WorkDay> WorkDays { get; set; }
         public virtual DbSet<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=localhost;Database=AppointmentJournal;User ID=sa;Password=Password10;MultipleActiveResultSets=true");
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

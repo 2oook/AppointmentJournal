@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using AppointmentJournal.AppCore;
 using AppointmentJournal.AppDatabase;
 
 namespace AppointmentJournal;
@@ -20,16 +21,19 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        services.Configure<SqlOptions>(Configuration.GetSection(SqlOptions.SectionName));
+        services.AddOptions<SqlOptions>();
+
         services
             .AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
 
         services.AddDbContext<AppointmentJournalContext>(options => 
-            options.UseSqlServer(Configuration["Data:AppointmentJournal:ConnectionString"]));
+            options.UseSqlServer());
 
         services.AddDbContext<AppIdentityDbContext>(options => 
-            options.UseSqlServer(Configuration["Data:AppointmentJournalIdentity:ConnectionString"]));
+            options.UseSqlServer());
 
         services.AddControllersWithViews();
 
@@ -51,8 +55,8 @@ public class Startup
         app.UseAuthentication();
         app.UseAuthorization();
 
-        identityDbContext.CreateAdminAccount().Wait();
         identityDbContext.CreateRoles().Wait();
+        identityDbContext.CreateAdminAccount().Wait();     
 
         app.UseEndpoints(endpoints =>
         {
