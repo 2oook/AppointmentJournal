@@ -94,11 +94,11 @@ namespace AppointmentJournal.Controllers
             switch (userType)
             {
                 case UserType.Consumer:
-                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, DatabaseConstants.ConsumersRole));
                     break;
                 case UserType.Producer:
-                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ConsumersRole));
-                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, Constants.ProducersRole));
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, DatabaseConstants.ConsumersRole));
+                    setRoleResultList.Add(await _userManager.AddToRoleAsync(user, DatabaseConstants.ProducersRole));
                     break;
                 default:
                     throw new Exception($"{nameof(UserType)} = {userType} is not defined");
@@ -174,11 +174,11 @@ namespace AppointmentJournal.Controllers
 
                 UserType userType;
 
-                if (rolesList.Contains(Constants.ProducersRole) & rolesList.Contains(Constants.ConsumersRole))
+                if (rolesList.Contains(DatabaseConstants.ProducersRole) & rolesList.Contains(DatabaseConstants.ConsumersRole))
                 {
                     userType = UserType.Producer;
                 }
-                else if (rolesList.Contains(Constants.ConsumersRole))
+                else if (rolesList.Contains(DatabaseConstants.ConsumersRole))
                 {
                     userType = UserType.Consumer;
                 }

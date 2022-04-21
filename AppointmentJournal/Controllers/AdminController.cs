@@ -1,36 +1,31 @@
 ﻿using AppointmentJournal.AppDatabase;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace AppointmentJournal.Controllers
-{
+namespace AppointmentJournal.Controllers;
+
+/// <summary>
+/// Admin's controller
+/// </summary>
+[Authorize(Roles = DatabaseConstants.AdminsRole)]
+public class AdminController : Controller
+{      
+    public IActionResult Index()
+    {
+        return View();
+    }
+
     /// <summary>
-    /// Контроллер для обработки запросов связанных с администрированием приложения
+    /// Метод для наполнения БД тестовыми данными
     /// </summary>
-    [Authorize(Roles = "Admins")]
-    public class AdminController : Controller
-    {      
-        public IActionResult Index()
-        {
-            return View();
-        }
+    /// <returns></returns>
+    [HttpPost]
+    public IActionResult SeedDatabaseWithFakeData()
+    {          
+        var fakeDataProvider = new FakeDataForDBProvider(HttpContext.RequestServices);
 
-        /// <summary>
-        /// Метод для наполнения БД тестовыми данными
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public IActionResult SeedDatabaseWithFakeData()
-        {          
-            var fakeDataProvider = new FakeDataForDBProvider(HttpContext.RequestServices);
+        fakeDataProvider.PopulateDBWithFakeData(HttpContext.RequestServices);
 
-            fakeDataProvider.PopulateDBWithFakeData(HttpContext.RequestServices);
-
-            return RedirectToAction(nameof(Index));
-        }
+        return RedirectToAction(nameof(Index));
     }
 }

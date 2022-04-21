@@ -336,13 +336,13 @@ public class FakeDataForDBProvider
     // Список тестовых пользователей
     private static List<(string name, string email, string password, List<string> roles)> Users = new List<(string name, string email, string password, List<string> roles)>()
     {
-        ("user1", "user1@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
-        ("user2", "user2@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
-        ("user3", "user3@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole }),
+        ("user1", "user1@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole }),
+        ("user2", "user2@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole }),
+        ("user3", "user3@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole }),
 
-        ("car_washer", "car_washer@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole }),
-        ("barber", "barber2@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole }),
-        ("nail_maker", "nail_maker@email.com", "@Qaz123usr", new List<string> (){ Constants.ConsumersRole, Constants.ProducersRole })
+        ("car_washer", "car_washer@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole, DatabaseConstants.ProducersRole }),
+        ("barber", "barber2@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole, DatabaseConstants.ProducersRole }),
+        ("nail_maker", "nail_maker@email.com", "@Qaz123usr", new List<string> (){ DatabaseConstants.ConsumersRole, DatabaseConstants.ProducersRole })
     };
 
     // Метод для создания тестовых пользователей

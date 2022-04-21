@@ -17,7 +17,7 @@ namespace AppointmentJournal.Controllers
     /// <summary>
     /// Контроллер для обработки запросов связанных с действиями производителя
     /// </summary>
-    [Authorize(Roles = Constants.ProducersRole)]
+    [Authorize(Roles = DatabaseConstants.ProducersRole)]
     public class ProducerController : Controller
     {
         private IServiceProvider _serviceProvider;

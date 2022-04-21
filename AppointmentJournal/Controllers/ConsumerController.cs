@@ -15,7 +15,7 @@ namespace AppointmentJournal.Controllers
     /// <summary>
     /// Контроллер для обработки запросов связанных с действиями потребителя
     /// </summary>
-    [Authorize(Roles = Constants.ConsumersRole + "," + Constants.ProducersRole)]
+    [Authorize(Roles = DatabaseConstants.ConsumersRole + "," + DatabaseConstants.ProducersRole)]
     public class ConsumerController : Controller
     {
         private IServiceProvider _serviceProvider;

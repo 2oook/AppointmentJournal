@@ -61,8 +61,8 @@ public class AppIdentityDbContext : IdentityDbContext<User>
     {
         var roles = new List<string>()
         {
-            Constants.ConsumersRole,
-            Constants.ProducersRole
+            DatabaseConstants.ConsumersRole,
+            DatabaseConstants.ProducersRole
         };
 
         RoleManager<IdentityRole> roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
