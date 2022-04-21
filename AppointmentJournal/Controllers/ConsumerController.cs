@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using AppointmentJournal.AppReversedDatabase;
+using AppointmentJournal.AppDatabase;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;

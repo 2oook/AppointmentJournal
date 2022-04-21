@@ -1,28 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿namespace AppointmentJournal.Models;
 
-namespace AppointmentJournal.Models
+/// <summary>
+/// String constants
+/// </summary>
+public class Constants
 {
     /// <summary>
-    /// Класс для констант
+    /// Название приложения большими символами
     /// </summary>
-    public class Constants
-    {
-        /// <summary>
-        /// Название приложения большими символами
-        /// </summary>
-        public const string AppNameUpperCase = "APPOINTMENT JOURNAL";
+    public const string AppNameUpperCase = "APPOINTMENT JOURNAL";
 
-        /// <summary>
-        /// Строка роли потребителей
-        /// </summary>
-        public const string ConsumersRole = "Consumers";
+    /// <summary>
+    /// Строка роли потребителей
+    /// </summary>
+    public const string ConsumersRole = "Consumers";
 
-        /// <summary>
-        /// Строка роли производителей
-        /// </summary>
-        public const string ProducersRole = "Producers";
-    }
+    /// <summary>
+    /// Строка роли производителей
+    /// </summary>
+    public const string ProducersRole = "Producers";
 }

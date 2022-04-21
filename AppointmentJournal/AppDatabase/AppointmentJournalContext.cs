@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace AppointmentJournal.AppReversedDatabase
+namespace AppointmentJournal.AppDatabase
 {
     public partial class AppointmentJournalContext : DbContext
     {

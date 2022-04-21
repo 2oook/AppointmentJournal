@@ -6,7 +6,7 @@ using AppointmentJournal.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
-using AppointmentJournal.AppReversedDatabase;
+using AppointmentJournal.AppDatabase;
 
 namespace AppointmentJournal;
 

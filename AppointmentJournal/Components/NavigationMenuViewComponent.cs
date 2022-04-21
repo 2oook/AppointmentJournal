@@ -1,4 +1,4 @@
-﻿using AppointmentJournal.AppReversedDatabase;
+﻿using AppointmentJournal.AppDatabase;
 using AppointmentJournal.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;

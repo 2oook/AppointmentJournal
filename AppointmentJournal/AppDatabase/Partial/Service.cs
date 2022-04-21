@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AppointmentJournal.AppReversedDatabase
+namespace AppointmentJournal.AppDatabase
 {
     /// <summary>
     /// Класс представляет услугу

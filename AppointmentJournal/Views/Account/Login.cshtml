@@ -6,7 +6,7 @@
 }
 
 <div class="m-1 p-1 d-inline-block">
-    <h2>Вход</h2>
+    <h2>Input your credentials</h2>
     <div class="text-danger" asp-validation-summary="All"></div>
     <form asp-action="Login" asp-controller="Account" method="post">
         <input type="hidden" asp-for="ReturnUrl" />
@@ -21,7 +21,10 @@
             <input asp-for="Password" class="form-control" />
         </div>
         <div>
-            <input class="btn btn-primary" type="submit" value="Вход" />
+            <input class="btn btn-primary" type="submit" value="Sign in" />
         </div>
     </form>
+</div>
+<div class="m-1 p-1 d-inline-block">
+    <a class="btn btn-info container-fluid" asp-controller="Account" asp-action="Register">Sign up</a>
 </div>

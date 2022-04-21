@@ -8,25 +8,25 @@ using System.Threading.Tasks;
 namespace AppointmentJournal.Models
 {
     /// <summary>
-    /// Пользователь
+    /// User
     /// </summary>
     public class User : IdentityUser
     {
         /// <summary>
-        /// Город
+        /// City
         /// </summary>
         public string City { get; set; }
     }
 
     /// <summary>
-    /// Тип пользователя приложения
+    /// Type of app user
     /// </summary>
     public enum UserType
     {
         None,
-        [Display(Name ="Потребитель услуг")]
+        [Display(Name ="Service consumer")]
         Consumer,
-        [Display(Name = "Производитель услуг")]
+        [Display(Name = "Service producer")]
         Producer
     }
 }

@@ -3,19 +3,18 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace AppointmentJournal.AppReversedDatabase
+namespace AppointmentJournal.AppDatabase
 {
-    public partial class WorkDay
+    public partial class Address
     {
-        public WorkDay()
+        public Address()
         {
             WorkDaysTimeSpans = new HashSet<WorkDaysTimeSpan>();
         }
 
         public long Id { get; set; }
+        public string AddressValue { get; set; }
         public string ProducerId { get; set; }
-        public DateTime Date { get; set; }
-        public bool IsEnabled { get; set; }
 
         public virtual ICollection<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
     }
