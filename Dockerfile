@@ -3,13 +3,11 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:latest AS build
 WORKDIR /src
-COPY ["./AppointmentJournal/AppointmentJournal.csproj", "."]
-RUN dotnet restore "/src/AppointmentJournal.csproj"
-COPY ./AppointmentJournal .
-RUN dotnet build "AppointmentJournal.csproj" -c Release -o /app
+COPY . .
+RUN dotnet build "./AppointmentJournal/AppointmentJournal.csproj" -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish "AppointmentJournal.csproj" -c Release -o /app
+RUN dotnet publish "./AppointmentJournal/AppointmentJournal.csproj" -c Release -o /app
 
 FROM base AS final
 
