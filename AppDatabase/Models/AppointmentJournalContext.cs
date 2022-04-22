@@ -5,7 +5,7 @@ using AppointmentJournal.AppCore;
 
 namespace AppointmentJournal.AppDatabase
 {
-    public partial class AppointmentJournalContext : DbContext
+    public partial class AppointmentJournalContext : DbContext, IAppointmentJournalContext
     {
         public AppointmentJournalContext()
         {
@@ -26,6 +26,13 @@ namespace AppointmentJournal.AppDatabase
         public virtual DbSet<ServicesCategory> ServicesCategories { get; set; }
         public virtual DbSet<WorkDay> WorkDays { get; set; }
         public virtual DbSet<WorkDaysTimeSpan> WorkDaysTimeSpans { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

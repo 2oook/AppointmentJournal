@@ -22,18 +22,11 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.Configure<SqlOptions>(Configuration.GetSection(SqlOptions.SectionName));
-        services.AddOptions<SqlOptions>();
 
         services
             .AddIdentity<User, IdentityRole>()
             .AddEntityFrameworkStores<AppIdentityDbContext>()
             .AddDefaultTokenProviders();
-
-        services.AddDbContext<AppointmentJournalContext>(options => 
-            options.UseSqlServer());
-
-        services.AddDbContext<AppIdentityDbContext>(options => 
-            options.UseSqlServer());
 
         services.AddControllersWithViews();
 

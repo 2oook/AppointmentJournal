@@ -10,7 +10,7 @@ namespace AppointmentJournal.AppDatabase;
 /// <summary>
 /// DbContext for authorization and authentication
 /// </summary>
-public class AppIdentityDbContext : IdentityDbContext<User>
+public class AppIdentityDbContext : IdentityDbContext<User>, IAppIdentityDbContext
 {
     public AppIdentityDbContext(
         DbContextOptions<AppIdentityDbContext> options,
@@ -28,6 +28,13 @@ public class AppIdentityDbContext : IdentityDbContext<User>
     private IServiceProvider _serviceProvider { get; set; }
 
     private IConfiguration _configuration { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        if (!optionsBuilder.IsConfigured)
+        {
+        }
+    }
 
     public async Task CreateAdminAccount()
     {

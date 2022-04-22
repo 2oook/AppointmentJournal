@@ -9,7 +9,7 @@ services:
     ports:
      - "1433:1433"
 
-    #restart: always
+    restart: always
 
     user: root
 
